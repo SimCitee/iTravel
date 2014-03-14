@@ -7,6 +7,7 @@
     <string name="title_activity_liste_nouvelles">ListeNouvelles</string>
     <string name="btnSeeMyPost">My posts</string>
     <string name="title_activity_details_nouvelle">DetailsNouvelle</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="btnDetailAddComment">Send</string>
+    <string name="txtDetailPosition">Position :</string>
 
 </resources>

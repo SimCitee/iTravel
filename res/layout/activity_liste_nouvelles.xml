@@ -16,7 +16,7 @@
             android:layout_height="367dp" >
 
             <ListView
-                android:id="@+id/lvListeNouvelles"
+                android:id="@+id/lvDetailListeCommentaire"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
             </ListView>

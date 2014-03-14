@@ -67,6 +67,6 @@ public class ListeNouvelles extends Activity {
 
 	
 	private void initViews() {
-		vListe = (ListView)findViewById(R.id.lvListeNouvelles);
+		vListe = (ListView)findViewById(R.id.lvDetailListeCommentaire);
 	}
 }
