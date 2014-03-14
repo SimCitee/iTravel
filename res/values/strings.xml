@@ -5,6 +5,8 @@
     <string name="action_settings">Settings</string>
     <string name="image_default">Image</string>
     <string name="title_activity_liste_nouvelles">ListeNouvelles</string>
+    <string name="btnSeeMyPost">My posts</string>
+    <string name="title_activity_details_nouvelle">DetailsNouvelle</string>
     <string name="hello_world">Hello world!</string>
 
 </resources>

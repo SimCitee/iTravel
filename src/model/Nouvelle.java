@@ -5,10 +5,16 @@ import java.sql.Date;
 public class Nouvelle {
 	
 	private String nomContact;
-	private String commmentaire;
+	private String commentaire;
 	private Date date;
 	private String postTime;
 	private int imageId;
+	
+	public Nouvelle(String nom, String comment, int id) {
+		nomContact = nom;
+		commentaire = comment;
+		imageId = id;
+	}
 	
 	public String getNomContact() {
 		return nomContact;
@@ -16,11 +22,11 @@ public class Nouvelle {
 	public void setNomContact(String nomContact) {
 		this.nomContact = nomContact;
 	}
-	public String getCommmentaire() {
-		return commmentaire;
+	public String getCommentaire() {
+		return commentaire;
 	}
-	public void setCommmentaire(String commmentaire) {
-		this.commmentaire = commmentaire;
+	public void setCommentaire(String commentaire) {
+		this.commentaire = commentaire;
 	}
 	public Date getDate() {
 		return date;
