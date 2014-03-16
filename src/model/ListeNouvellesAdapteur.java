@@ -1,7 +1,9 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import com.android.itravel.ListeNouvelles;
 import com.android.itravel.R;
 import com.android.itravel.R.id;
 import com.android.itravel.R.layout;
@@ -13,9 +15,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ListeNouvellesAdapteur extends ArrayAdapter<Nouvelle> {
+public class ListeNouvellesAdapteur extends ArrayAdapter<HashMap<String, Nouvelle>> {
 	
-	public ListeNouvellesAdapteur(Context context, int resource, ArrayList<Nouvelle> data) {
+	public ListeNouvellesAdapteur(Context context, int resource, ArrayList<HashMap<String, Nouvelle>> data) {
 		super(context, resource, data);
 	}
 	
@@ -28,7 +30,9 @@ public class ListeNouvellesAdapteur extends ArrayAdapter<Nouvelle> {
 			v = vi.inflate(R.layout.list_post, null);
 		}
 		
-		Nouvelle n = getItem(position);
+		HashMap<String, Nouvelle> item = getItem(position);
+		
+		Nouvelle n = item.get(ListeNouvelles.getTagPid());
 		
 		if (n != null) {
 			TextView nomContact = (TextView) v.findViewById(R.id.txtListeNomContact);
