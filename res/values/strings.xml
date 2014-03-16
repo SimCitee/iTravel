@@ -9,5 +9,7 @@
     <string name="title_activity_details_nouvelle">DetailsNouvelle</string>
     <string name="btnDetailAddComment">Send</string>
     <string name="txtDetailPosition">Position :</string>
+    <string name="loadingAllPosts">Loading posts. Please wait...</string>
+    <string name="noInternetConnection">No internet connection</string>
 
 </resources>

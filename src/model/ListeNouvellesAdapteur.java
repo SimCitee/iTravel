@@ -2,12 +2,14 @@ package model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import com.android.itravel.ListeNouvelles;
 import com.android.itravel.R;
 import com.android.itravel.R.id;
 import com.android.itravel.R.layout;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +17,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ListeNouvellesAdapteur extends ArrayAdapter<HashMap<String, Nouvelle>> {
+public class ListeNouvellesAdapteur extends ArrayAdapter<LinkedHashMap<String, Nouvelle>> {
 	
-	public ListeNouvellesAdapteur(Context context, int resource, ArrayList<HashMap<String, Nouvelle>> data) {
+	private final ArrayList mData;
+	
+	public ListeNouvellesAdapteur(Context context, int resource, ArrayList<LinkedHashMap<String, Nouvelle>> data) {
 		super(context, resource, data);
+	
+		mData = data;
 	}
 	
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -30,9 +36,9 @@ public class ListeNouvellesAdapteur extends ArrayAdapter<HashMap<String, Nouvell
 			v = vi.inflate(R.layout.list_post, null);
 		}
 		
-		HashMap<String, Nouvelle> item = getItem(position);
-		
-		Nouvelle n = item.get(ListeNouvelles.getTagPid());
+		LinkedHashMap<String, Nouvelle> item = (LinkedHashMap<String, Nouvelle>) mData.get(position);
+		Object key = item.keySet().iterator().next();
+		Nouvelle n = item.get(key);
 		
 		if (n != null) {
 			TextView nomContact = (TextView) v.findViewById(R.id.txtListeNomContact);
@@ -48,9 +54,9 @@ public class ListeNouvellesAdapteur extends ArrayAdapter<HashMap<String, Nouvell
 			}
 			
 			if (image != null) {
-				image.setImageResource(n.getImageId());
+				//image.setImageResource(n.getImageId());
 			}
-			
+		
 		}
 		
 		return v;
