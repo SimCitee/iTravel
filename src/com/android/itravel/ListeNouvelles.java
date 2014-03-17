@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import model.ConnectionDetector;
+import model.DataAccessController;
 import model.DataURL;
 import model.JSONParser;
 import model.ListeNouvellesAdapteur;
@@ -33,7 +34,6 @@ public class ListeNouvelles extends Activity {
 	private ListeNouvellesAdapteur adapteur;
 	private ArrayList<LinkedHashMap<String, Nouvelle>> liste;
 	private ProgressDialog pDialog;			// Progress dialog
-	private JSONParser jParser;				// JSON Parser
 	private ConnectionDetector cd;
 	
 	// JSON Node
@@ -56,8 +56,7 @@ public class ListeNouvelles extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_liste_nouvelles);
 		initViews();
-		
-		jParser = new JSONParser();
+
 		liste  = new ArrayList<LinkedHashMap<String, Nouvelle>>();
 		cd = new ConnectionDetector(getApplicationContext());
 		
@@ -84,8 +83,16 @@ public class ListeNouvelles extends Activity {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view,
                 int position, long id) {
-			// TODO Auto-generated method stub
+			
+			LinkedHashMap<String, Nouvelle> item = (LinkedHashMap<String, Nouvelle>) liste.get(position);
+			Object key = item.keySet().iterator().next();
+			Nouvelle n = item.get(key);
+			
 			Intent intent = new Intent(ListeNouvelles.this, DetailsNouvelle.class);
+			
+			intent.putExtra("nomContact", n.getNomContact());
+			intent.putExtra("commentaire", n.getCommentaire());
+			
     		startActivity(intent);
 			
 		}
@@ -111,8 +118,8 @@ public class ListeNouvelles extends Activity {
 		protected String doInBackground(String... args) {
 						
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			JSONObject json = jParser.makeHttpRequest(DataURL.getNouvellesVoyageur(), "GET", params);
-						
+			JSONObject json = DataAccessController.getDataFromUrl(DataURL.getNouvellesVoyageur(), "GET", params);
+
 			try {
 				int success = json.getInt(TAG_SUCCES);	// valider le chargement
 				
