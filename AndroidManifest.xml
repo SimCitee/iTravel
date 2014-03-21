@@ -3,39 +3,25 @@
     package="com.android.itravel"
     android:versionCode="1"
     android:versionName="1.0" >
-
-    <uses-sdk
-        android:minSdkVersion="15"
-        android:targetSdkVersion="19" />
-
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA" />
-
-    <application
-        android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity
-            android:name="com.android.itravel.MainActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name="com.android.itravel.ListeNouvelles"
-            android:label="@string/title_activity_liste_nouvelles" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.android.itravel.DetailsNouvelle"
-            android:label="@string/title_activity_details_nouvelle" >
-        </activity>
-    </application>
+  
+    <uses-sdk android:minSdkVersion="15" android:targetSdkVersion="19"/>
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	<uses-permission android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.CAMERA"/>
+	<application android:allowBackup="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:theme="@style/AppTheme">
+		<activity android:name="com.android.itravel.MainActivity" android:label="@string/app_name"></activity>
+		<activity android:name="com.android.itravel.ListeNouvelles" android:label="@string/title_activity_liste_nouvelles"></activity>
+		<activity android:name="com.android.itravel.DetailsNouvelle" android:label="@string/title_activity_details_nouvelle"></activity>
+		<activity android:name="com.android.itravel.MesNouvelles" android:label="@string/title_activity_my_news">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN"/>
+				<category android:name="android.intent.category.LAUNCHER"/>
+			</intent-filter>
+		</activity>
+		<activity android:name="com.android.itravel.MesNouvellesModifier" android:label="@string/title_activity_mes_nouvelles_modifier" android:parentActivityName="com.android.itravel.MesNouvelles"></activity>
+		<activity android:name="com.android.itravel.MesNouvellesAjouter" android:label="@string/title_activity_mes_nouvelles_ajouter" android:parentActivityName="com.android.itravel.MesNouvelles"></activity>
+	</application>
 
 </manifest>

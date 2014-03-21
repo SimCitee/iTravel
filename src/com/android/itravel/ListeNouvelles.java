@@ -14,7 +14,7 @@ import model.DataAccessController;
 import model.DataURL;
 import model.JSONParser;
 import model.ListeNouvellesAdapteur;
-import model.Nouvelle;
+import model.Nouvelle_simon;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
@@ -32,7 +32,7 @@ public class ListeNouvelles extends Activity {
 	private ListView vListe;
 	private Button btnMyPost;
 	private ListeNouvellesAdapteur adapteur;
-	private ArrayList<LinkedHashMap<String, Nouvelle>> liste;
+	private ArrayList<LinkedHashMap<String, Nouvelle_simon>> liste;
 	private ProgressDialog pDialog;			// Progress dialog
 	private ConnectionDetector cd;
 	
@@ -57,7 +57,7 @@ public class ListeNouvelles extends Activity {
 		setContentView(R.layout.activity_liste_nouvelles);
 		initViews();
 
-		liste  = new ArrayList<LinkedHashMap<String, Nouvelle>>();
+		liste  = new ArrayList<LinkedHashMap<String, Nouvelle_simon>>();
 		cd = new ConnectionDetector(getApplicationContext());
 		
 		boolean isInternetActive = cd.isConnectingToInternet();
@@ -67,7 +67,7 @@ public class ListeNouvelles extends Activity {
 			vListe.setOnItemClickListener(onPostClick);
 		} 
 		else {
-			Toast.makeText(getApplicationContext(), getResources().getString(R.string.noInternetConnection), Toast.LENGTH_SHORT).show();
+			//Toast.makeText(getApplicationContext(), getResources().getString(R.string.noInternetConnection), Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -84,9 +84,9 @@ public class ListeNouvelles extends Activity {
 		public void onItemClick(AdapterView<?> parent, View view,
                 int position, long id) {
 			
-			LinkedHashMap<String, Nouvelle> item = (LinkedHashMap<String, Nouvelle>) liste.get(position);
+			LinkedHashMap<String, Nouvelle_simon> item = (LinkedHashMap<String, Nouvelle_simon>) liste.get(position);
 			Object key = item.keySet().iterator().next();
-			Nouvelle n = item.get(key);
+			Nouvelle_simon n = item.get(key);
 			
 			Intent intent = new Intent(ListeNouvelles.this, DetailsNouvelle.class);
 			
@@ -108,7 +108,7 @@ public class ListeNouvelles extends Activity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(ListeNouvelles.this);
-			pDialog.setMessage(getResources().getString(R.string.loadingAllPosts));
+			//pDialog.setMessage(getResources().getString(R.string.loadingAllPosts));
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(false);
 			pDialog.show();
@@ -136,10 +136,10 @@ public class ListeNouvelles extends Activity {
 						String name = node.getString(TAG_CONTACT_NAME);
 						String comment = node.getString(TAG_COMMENT);
 												
-						Nouvelle n = new Nouvelle(name, comment, 1);
+						Nouvelle_simon n = new Nouvelle_simon(name, comment, 1);
 						
 						// Nouvelle Hashmap de nouvelles
-						LinkedHashMap<String, Nouvelle> map = new LinkedHashMap<String, Nouvelle>();
+						LinkedHashMap<String, Nouvelle_simon> map = new LinkedHashMap<String, Nouvelle_simon>();
 						
 						map.put(id, n);
 						
