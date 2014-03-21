@@ -31,9 +31,12 @@
 
                 <ImageView
                     android:id="@+id/imvDetailImage"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_launcher" />
+                    android:layout_centerInParent="true"
+                    android:adjustViewBounds="true"
+                    android:scaleType="center"
+                    android:src="@drawable/thumbnail_default" />
 
             </RelativeLayout>
 

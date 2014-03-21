@@ -25,7 +25,7 @@ public class DataAccessController {
 		return jParser.makeHttpRequest(url, method, params);
 	}
 	
-	public Bitmap getBitmapFromURL(String imageUrl) {
+	public static Bitmap getBitmapFromURL(String imageUrl) {
 		try {
 			URL url = new URL(imageUrl);
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
