@@ -1,6 +1,8 @@
 package com.android.itravel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -12,14 +14,20 @@ import org.json.JSONObject;
 import model.ConnectionDetector;
 import model.DataAccessController;
 import model.DataURL;
+import model.ITravelContract.EntreeNouvelle;
+import model.ITravelContract.EntreeUtilisateur;
+import model.ITravelDbHelper;
 import model.JSONParser;
 import model.ListeNouvellesAdapteur;
-import model.Nouvelle_simon;
+import model.Nouvelle;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,9 +40,11 @@ public class ListeNouvelles extends Activity {
 	private ListView vListe;
 	private Button btnMyPost;
 	private ListeNouvellesAdapteur adapteur;
-	private ArrayList<LinkedHashMap<String, Nouvelle_simon>> liste;
+	private ArrayList<LinkedHashMap<String, Nouvelle>> liste;
 	private ProgressDialog pDialog;			// Progress dialog
 	private ConnectionDetector cd;
+	private ITravelDbHelper dbHelper;
+	private SQLiteDatabase db, rdb;
 	
 	// JSON Node
 	private static final String TAG_SUCCES = "success";
@@ -57,18 +67,58 @@ public class ListeNouvelles extends Activity {
 		setContentView(R.layout.activity_liste_nouvelles);
 		initViews();
 
-		liste  = new ArrayList<LinkedHashMap<String, Nouvelle_simon>>();
+		liste  = new ArrayList<LinkedHashMap<String, Nouvelle>>();
 		cd = new ConnectionDetector(getApplicationContext());
-		
-		boolean isInternetActive = cd.isConnectingToInternet();
+		adapteur = new ListeNouvellesAdapteur(this, R.layout.list_post, liste);
+        dbHelper = new ITravelDbHelper(this);
+        db = dbHelper.getWritableDatabase();
+        rdb = dbHelper.getReadableDatabase();
+                   
+        vListe.setAdapter(adapteur);
+        vListe.setOnItemClickListener(onPostClick);
+        
+        chargerNouvelles();
+        
+        
+		/*boolean isInternetActive = cd.isConnectingToInternet();
 		
 		if (isInternetActive) {
 			new LoadNouvellesUtilisateur().execute();
 			vListe.setOnItemClickListener(onPostClick);
 		} 
 		else {
-			//Toast.makeText(getApplicationContext(), getResources().getString(R.string.noInternetConnection), Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(), getResources().getString(R.string.noInternetConnection), Toast.LENGTH_SHORT).show();
+		}*/
+	}
+	
+	private void chargerNouvelles() {
+		
+		Cursor c = dbHelper.getNouvellesUtilisateur("1");
+    	
+    	if (c.moveToFirst()){
+    		
+    		liste.clear();
+    		
+    		do {
+			   
+    			String nouvelle_id = c.getString(c.getColumnIndex(EntreeNouvelle._ID));
+    			String txt = c.getString(c.getColumnIndex(EntreeNouvelle._TEXTE));
+    			String date = c.getString(c.getColumnIndex(EntreeNouvelle._DATE));
+    			LinkedHashMap<String, Nouvelle> map = new LinkedHashMap<String, Nouvelle>();
+				Nouvelle n = new Nouvelle();
+				
+				n.setNouvelleTexte(txt);
+				n.setNouvelleDate(date);
+    			
+				map.put(nouvelle_id, n);
+		      
+    			liste.add(map);
+		      
+		      
+		   } while(c.moveToNext());
 		}
+		c.close();	
+		
 	}
 
 	@Override
@@ -84,14 +134,14 @@ public class ListeNouvelles extends Activity {
 		public void onItemClick(AdapterView<?> parent, View view,
                 int position, long id) {
 			
-			LinkedHashMap<String, Nouvelle_simon> item = (LinkedHashMap<String, Nouvelle_simon>) liste.get(position);
+			LinkedHashMap<String, Nouvelle> item = (LinkedHashMap<String, Nouvelle>) liste.get(position);
 			Object key = item.keySet().iterator().next();
-			Nouvelle_simon n = item.get(key);
+			Nouvelle n = item.get(key);
 			
 			Intent intent = new Intent(ListeNouvelles.this, DetailsNouvelle.class);
 			
-			intent.putExtra("nomContact", n.getNomContact());
-			intent.putExtra("commentaire", n.getCommentaire());
+			intent.putExtra("nomContact", n.getPays());
+			intent.putExtra("commentaire", n.getVille());
 			
     		startActivity(intent);
 			
@@ -136,10 +186,10 @@ public class ListeNouvelles extends Activity {
 						String name = node.getString(TAG_CONTACT_NAME);
 						String comment = node.getString(TAG_COMMENT);
 												
-						Nouvelle_simon n = new Nouvelle_simon(name, comment, 1);
+						Nouvelle n = new Nouvelle();
 						
 						// Nouvelle Hashmap de nouvelles
-						LinkedHashMap<String, Nouvelle_simon> map = new LinkedHashMap<String, Nouvelle_simon>();
+						LinkedHashMap<String, Nouvelle> map = new LinkedHashMap<String, Nouvelle>();
 						
 						map.put(id, n);
 						

@@ -10,7 +10,7 @@
 	<string name="btnDetailAddComment">Send</string>
 	<string name="txtDetailPosition">Position :</string>
 	<string name="title_activity_my_news">MyNews</string>
-	<string name="hello_world">Hello world!</string>
+	<string name="noInternetConnection">No internet connection</string>
 	<string name="title_activity_mes_nouvelles_modifier">MesNouvellesModifier</string>
 	<string name="mes_nouvelles_modifier_sauvegarder_btn">Sauvegarder</string>
 	<string name="title_activity_mes_nouvelles_ajouter">MesNouvellesAjouter</string>

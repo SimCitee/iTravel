@@ -17,11 +17,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ListeNouvellesAdapteur extends ArrayAdapter<LinkedHashMap<String, Nouvelle_simon>> {
+public class ListeNouvellesAdapteur extends ArrayAdapter<LinkedHashMap<String, Nouvelle>> {
 	
 	private final ArrayList mData;
 	
-	public ListeNouvellesAdapteur(Context context, int resource, ArrayList<LinkedHashMap<String, Nouvelle_simon>> data) {
+	public ListeNouvellesAdapteur(Context context, int resource, ArrayList<LinkedHashMap<String, Nouvelle>> data) {
 		super(context, resource, data);
 	
 		mData = data;
@@ -36,9 +36,9 @@ public class ListeNouvellesAdapteur extends ArrayAdapter<LinkedHashMap<String, N
 			v = vi.inflate(R.layout.list_post, null);
 		}
 		
-		LinkedHashMap<String, Nouvelle_simon> item = (LinkedHashMap<String, Nouvelle_simon>) mData.get(position);
+		LinkedHashMap<String, Nouvelle> item = (LinkedHashMap<String, Nouvelle>) mData.get(position);
 		Object key = item.keySet().iterator().next();
-		Nouvelle_simon n = item.get(key);
+		Nouvelle n = item.get(key);
 		
 		if (n != null) {
 			TextView nomContact = (TextView) v.findViewById(R.id.txtListeNomContact);
@@ -46,11 +46,11 @@ public class ListeNouvellesAdapteur extends ArrayAdapter<LinkedHashMap<String, N
 			ImageView image		= (ImageView) v.findViewById(R.id.imvListeImage);
 			
 			if (nomContact != null) {
-				nomContact.setText(n.getNomContact());
+				nomContact.setText(n.getPays());
 			}
 			
 			if (commentaire != null) {
-				commentaire.setText(n.getCommentaire());
+				commentaire.setText(n.getVille());
 			}
 			
 			if (image != null) {

@@ -5,7 +5,7 @@ import java.util.Date;
 public class Nouvelle {
 	private int nouvelleId;
 	private String nouvelleTexte;
-	private Date nouvelleDate;
+	private String nouvelleDate;
 	private String nouvelleHeure;
 	private double latitude;
 	private double longitude;
@@ -31,11 +31,11 @@ public class Nouvelle {
 		this.nouvelleTexte = nouvelleTexte;
 	}
 	
-	public Date getNouvelleDate() {
+	public String getNouvelleDate() {
 		return nouvelleDate;
 	}
 	
-	public void setNouvelleDate(Date nouvelleDate) {
+	public void setNouvelleDate(String nouvelleDate) {
 		this.nouvelleDate = nouvelleDate;
 	}
 	
