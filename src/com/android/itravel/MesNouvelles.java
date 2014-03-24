@@ -62,6 +62,7 @@ public class MesNouvelles extends Activity {
 		// Define a projection that specifies which columns from the database 
 		// you will actually use after this query. 
 		String[] projection={EntreeNouvelle._ID, 
+			EntreeNouvelle._IMAGE,
 			EntreeNouvelle._TEXTE,
 			EntreeNouvelle._LATITUDE,
 			EntreeNouvelle._LONGITUDE,
@@ -88,41 +89,57 @@ public class MesNouvelles extends Activity {
 			null, // don't filter by row groups 
 			sortOrder // The sort order 
 		); 
+		
+		
+		
+		if (cursor.moveToFirst()) {
+Log.i("", "Cursor not empty");
+			do {
+				Log.i("", "Fetch data");
+				Long idNouvelle = cursor.getLong(cursor.getColumnIndex(EntreeNouvelle._ID)); 
+				
+				String imageId = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._IMAGE));
 
-		cursor.moveToFirst(); 
-		Log.i("", "avant while ");		
-		while (cursor.moveToNext())
-		{
-Log.i("", "Dans while ");			
-		
-			Long idNouvelle = cursor.getLong(cursor.getColumnIndex(EntreeNouvelle._ID)); 
-			String imageId = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._IMAGE));
-    		String commentaire = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._TEXTE)); 
-    		Double latitude = cursor.getDouble(cursor.getColumnIndex(EntreeNouvelle._LATITUDE)); 
-    		Double longitude = cursor.getDouble(cursor.getColumnIndex(EntreeNouvelle._LONGITUDE)); 
-    		String date = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._DATE)); 
-    		String heure = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._HEURE)); 
-    		String dateMAJ = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._DATE_MAJ)); 
-    		String heureMAJ = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._HEURE_MAJ)); 
-		
+	    		String commentaire = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._TEXTE)); 
+	    		
+	    		Double latitude = cursor.getDouble(cursor.getColumnIndex(EntreeNouvelle._LATITUDE)); 
+	    		Double longitude = cursor.getDouble(cursor.getColumnIndex(EntreeNouvelle._LONGITUDE)); 
+	    		String date = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._DATE)); 
+	    		String heure = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._HEURE)); 
+	    		String dateMAJ = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._DATE_MAJ)); 
+	    		String heureMAJ = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._HEURE_MAJ)); 
 			
-		
-			Nouvelle nouvelle = new Nouvelle();
-			nouvelle.setNouvelleId(idNouvelle);
-			nouvelle.setImageId(imageId);
-			nouvelle.setNouvelleTexte(commentaire);
-			nouvelle.setLatitude(latitude);
-			nouvelle.setLongitude(longitude);
-			nouvelle.setNouvelleDate(date);
-			nouvelle.setNouvelleHeure(heure);
-			nouvelle.setNouvelleDateMAJ(dateMAJ);
-			nouvelle.setNouvelleHeureMAJ(heureMAJ);
+				
 			
-			//Liste d'items
-			myList.add(nouvelle);
-			
+				Nouvelle nouvelle = new Nouvelle();
 		
+				nouvelle.setNouvelleId(idNouvelle);
+				nouvelle.setImageId(imageId);
+				nouvelle.setNouvelleTexte(commentaire);
+		
+				nouvelle.setLatitude(latitude);
+				nouvelle.setLongitude(longitude);
+				nouvelle.setNouvelleDate(date);
+				nouvelle.setNouvelleHeure(heure);
+				nouvelle.setNouvelleDateMAJ(dateMAJ);
+				nouvelle.setNouvelleHeureMAJ(heureMAJ);
+				
+				//Liste d'items
+				myList.add(nouvelle);
+	        	   
+			} while (cursor.moveToNext());
 		}
+		else
+		{
+			Log.i("", "Cursor IS empty");
+		}
+		
+		
+		
+			
+			
+		
+	
 		//1er param  : référence au contexte (toujours this)
 		//2eme param : Activité qui définit le layout à utilisé
 		//3eme param : Array ou liste d'objets utilisé pour créer la liste
