@@ -1,13 +1,15 @@
 package com.android.itravel;
 
 import java.util.ArrayList;
-import com.android.itravel.R;
+import java.util.Calendar;
 
+import com.android.itravel.R;
+import model.ITravelDbHelper;
 import model.MesNouvellesListeAdapteur;
 import model.Nouvelle;
 import model.Utilisateur;
 import model.UtilisateurActif;
-
+import model.ITravelContract.EntreeNouvelle;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -26,8 +28,10 @@ import android.widget.AdapterView.OnItemLongClickListener;
 
 public class MesNouvelles extends Activity {
 	
-	static final int EDIT_ITEM_REQUEST = 10;
-	static final int ADD_ITEM_REQUEST = 20;
+	private static final int EDIT_ITEM_REQUEST = 10;
+	private static final int ADD_ITEM_REQUEST = 20;
+	
+	
 	
 	protected ActionMode mActionMode;
 	private MesNouvellesListeAdapteur adapter = null;
@@ -49,23 +53,76 @@ public class MesNouvelles extends Activity {
 		
 		ArrayList<Nouvelle> myList = new ArrayList<Nouvelle>();
 		
-		Nouvelle n1 = new Nouvelle();
-		Nouvelle n2 = new Nouvelle();
-		Nouvelle n3 = new Nouvelle();
 		
-		n1.setNouvelleTexte("Commentaire de la nouvelle 1");
-		n2.setNouvelleTexte("Commentaire de la nouvelle 2");
-		n3.setNouvelleTexte("Commentaire de la nouvelle 3");
-		n1.setImageId(0);
-		n2.setImageId(0);
-		n3.setImageId(0);
+		///////////////////////
+		//FETCH
+		ITravelDbHelper mDbHelper = new ITravelDbHelper(this);
+		SQLiteDatabase db = mDbHelper.getReadableDatabase(); 
+	 
+		// Define a projection that specifies which columns from the database 
+		// you will actually use after this query. 
+		String[] projection={EntreeNouvelle._ID, 
+			EntreeNouvelle._TEXTE,
+			EntreeNouvelle._LATITUDE,
+			EntreeNouvelle._LONGITUDE,
+			EntreeNouvelle._DATE,
+			EntreeNouvelle._HEURE,
+			EntreeNouvelle._DATE_MAJ,
+			EntreeNouvelle._HEURE_MAJ}; 
+	 
+		// How you want the results sorted in the resulting Cursor 
+		String sortOrder = EntreeNouvelle._DATE_MAJ + " DESC"; 
+	 
+		//Champs de la clause WHERE
+		String selection = "";
+	
+		//Valeur des champs de la clause WHERE
+		String[] selectionArgs = {};
+	       		
+		Cursor cursor = db.query( 
+			EntreeNouvelle.TABLE, // The table to query 
+			projection, // The columns to return 
+			selection, // The columns for the WHERE clause 
+			selectionArgs, // The values for the WHERE clause 
+			null, // don't group the rows 
+			null, // don't filter by row groups 
+			sortOrder // The sort order 
+		); 
+
+		cursor.moveToFirst(); 
+		Log.i("", "avant while ");		
+		while (cursor.moveToNext())
+		{
+Log.i("", "Dans while ");			
 		
-		//Liste d'items
-		myList.add(n1);
-		myList.add(n2);
-		myList.add(n3);
-		Log.e("dddd", "Test log");
+			Long idNouvelle = cursor.getLong(cursor.getColumnIndex(EntreeNouvelle._ID)); 
+			String imageId = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._IMAGE));
+    		String commentaire = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._TEXTE)); 
+    		Double latitude = cursor.getDouble(cursor.getColumnIndex(EntreeNouvelle._LATITUDE)); 
+    		Double longitude = cursor.getDouble(cursor.getColumnIndex(EntreeNouvelle._LONGITUDE)); 
+    		String date = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._DATE)); 
+    		String heure = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._HEURE)); 
+    		String dateMAJ = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._DATE_MAJ)); 
+    		String heureMAJ = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._HEURE_MAJ)); 
 		
+			
+		
+			Nouvelle nouvelle = new Nouvelle();
+			nouvelle.setNouvelleId(idNouvelle);
+			nouvelle.setImageId(imageId);
+			nouvelle.setNouvelleTexte(commentaire);
+			nouvelle.setLatitude(latitude);
+			nouvelle.setLongitude(longitude);
+			nouvelle.setNouvelleDate(date);
+			nouvelle.setNouvelleHeure(heure);
+			nouvelle.setNouvelleDateMAJ(dateMAJ);
+			nouvelle.setNouvelleHeureMAJ(heureMAJ);
+			
+			//Liste d'items
+			myList.add(nouvelle);
+			
+		
+		}
 		//1er param  : référence au contexte (toujours this)
 		//2eme param : Activité qui définit le layout à utilisé
 		//3eme param : Array ou liste d'objets utilisé pour créer la liste
@@ -199,7 +256,7 @@ public class MesNouvelles extends Activity {
     		String commentaire = (String) dataMap.get("commentaire");
     		
     		Nouvelle nouvelle = adapter.getItem(position);
-    		nouvelle.setImageId(imageId);
+    		//nouvelle.setImageId(imageId);
     		nouvelle.setNouvelleTexte(commentaire);
 
     		adapter.notifyDataSetChanged();
@@ -221,23 +278,62 @@ public class MesNouvelles extends Activity {
        		
         		//Integer imageId = Integer.parseInt((String) dataMap.get("image_id"));
         		
-        		//TODO modifier pour vrai id de l'image
-        		Integer imageId = 0;
+       		
         		
+        		Long idNouvelle = dataMap.getLong("nouvelle_id");
+        		
+        		String idImage = (String) dataMap.get("id_image");
         		
         		String commentaire = (String) dataMap.get("commentaire");
         		
-        		Nouvelle nouvelle = new Nouvelle();
-        		nouvelle.setNouvelleId(1);
-        		nouvelle.setNouvelleTexte(commentaire);
+        		Double latitude = dataMap.getDouble ("latitude", 2);
         		
+        		Double longitude = (Double) dataMap.get("longitude");
+        		String date = (String) dataMap.get("date");
+        		String heure = (String) dataMap.get("heure");
+        		String dateMAJ = date;
+        		String heureMAJ = heure;
+        		    		
+        		Nouvelle nouvelle = new Nouvelle();
+        		nouvelle.setNouvelleId(idNouvelle);
+        		nouvelle.setImageId(idImage); //Sera changé pour un id coté serveur
+        		nouvelle.setNouvelleTexte(commentaire);
+        		nouvelle.setLatitude(latitude);
+        		nouvelle.setLongitude(longitude);
+        		nouvelle.setNouvelleDate(date);
+        		nouvelle.setNouvelleHeure(heure);
+        		nouvelle.setNouvelleDateMAJ(date);
+        		nouvelle.setNouvelleHeureMAJ(heureMAJ);
+        		   		
+        		//Ajout dans la bd
+        		ITravelDbHelper mDbHelper = new ITravelDbHelper(this);
+        		
+        		//Test DB
+        		// Gets the data repository in write mode 
+        		SQLiteDatabase dbWrite = mDbHelper.getWritableDatabase(); 
+        		 
+        		// Create a new map of values, where column names are the keys 
+        		ContentValues values = new ContentValues(); 
+        		 
+        		values.put(EntreeNouvelle._ID, idNouvelle); 
+        		values.put(EntreeNouvelle._IMAGE, idImage); 
+        		values.put(EntreeNouvelle._TEXTE, commentaire);
+        		values.put(EntreeNouvelle._LATITUDE, latitude); 
+        		values.put(EntreeNouvelle._LONGITUDE, longitude); 
+        		values.put(EntreeNouvelle._DATE, date); 
+        		values.put(EntreeNouvelle._HEURE, heure); 
+        		values.put(EntreeNouvelle._DATE_MAJ, dateMAJ); 
+        		values.put(EntreeNouvelle._HEURE_MAJ, heureMAJ); 
+        		 
+        		// Insert the new row, returning the primary key value of the new row 
+        		long newRowId = dbWrite.insert(EntreeNouvelle.TABLE, null, values);
+             		
+        		Log.i("", "NewRowId : " + newRowId);
+        		
+        		//Ajout à la liste
         		adapter.add(nouvelle);
-        		//Nouvelle nouvelle = adapter.getItem(position);
-        		//nouvelle.setImageId(imageId);
-        		//nouvelle.setNouvelleTexte(commentaire);
-
         		adapter.notifyDataSetChanged();
-      		
+ 	
     		}
     	}
     	

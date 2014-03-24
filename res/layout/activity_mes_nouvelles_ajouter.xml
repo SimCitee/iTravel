@@ -7,7 +7,12 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MesNouvellesAjouter" >
-
+	
+    <ScrollView
+        android:scrollbars="none"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+        
    <LinearLayout
         android:id="@+id/mes_nouvelles_ajouter_linear_layout"
         android:layout_width="wrap_content"
@@ -24,6 +29,11 @@
             android:src="@drawable/ic_launcher" />
         
         
+        <ImageButton
+            android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+        	android:id="@+id/mes_nouvelles_ajouter_photo_button"
+        	android:src="@drawable/ic_menu_camera" />
         
         <EditText
 	        android:id="@+id/mes_nouvelles_ajouter_commentaire_text"
@@ -51,6 +61,7 @@
         android:layout_marginTop="28dp"
         android:text="@string/mes_nouvelles_modifier_sauvegarder_btn" />
     
+    
     </LinearLayout>
-
+	</ScrollView>
 </RelativeLayout>

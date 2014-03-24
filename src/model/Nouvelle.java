@@ -3,23 +3,25 @@ package model;
 import java.util.Date;
 
 public class Nouvelle {
-	private int nouvelleId;
+	private Long nouvelleId;
 	private String nouvelleTexte;
 	private String nouvelleDate;
 	private String nouvelleHeure;
+	private String nouvelleDateMAJ;		//Date dernière mise à jour
+	private String nouvelleHeureMAJ;	//Heure dernière mise à jour
 	private double latitude;
 	private double longitude;
 	private String pays;
 	private String ville;
-	private int imageId;
+	private String imageId;
 	
 	public Nouvelle(){}
 	
-	public int getNouvelleId() {
+	public Long getNouvelleId() {
 		return nouvelleId;
 	}
 	
-	public void setNouvelleId(int nouvelleId) {
+	public void setNouvelleId(Long nouvelleId) {
 		this.nouvelleId = nouvelleId;
 	}
 	
@@ -45,6 +47,22 @@ public class Nouvelle {
 	
 	public void setNouvelleHeure(String nouvelleHeure) {
 		this.nouvelleHeure = nouvelleHeure;
+	}
+	
+	public String getNouvelleDateMAJ() {
+		return nouvelleDateMAJ;
+	}
+
+	public void setNouvelleDateMAJ(String nouvelleDateMAJ) {
+		this.nouvelleDateMAJ = nouvelleDateMAJ;
+	}
+
+	public String getNouvelleHeureMAJ() {
+		return nouvelleHeureMAJ;
+	}
+
+	public void setNouvelleHeureMAJ(String nouvelleHeureMAJ) {
+		this.nouvelleHeureMAJ = nouvelleHeureMAJ;
 	}
 	
 	public double getLatitude() {
@@ -79,11 +97,11 @@ public class Nouvelle {
 		this.ville = ville;
 	}
 	
-	public int getImageId() {
+	public String getImageId() {
 		return imageId;
 	}
 	
-	public void setImageId(int imageId) {
+	public void setImageId(String imageId) {
 		this.imageId = imageId;
 	}
 	

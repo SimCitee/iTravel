@@ -7,10 +7,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class ITravelDbHelper extends SQLiteOpenHelper {
 	public static final int DATABASE_VERSION = 1;
-	public static final String DATABASE_NAME = "ListeEpicerie.db";
+	public static final String DATABASE_NAME = "iTravel.db";
 	
 	public static final String SQL_CREATE_TABLE_UTILISATEUR = 
 			"CREATE TABLE " + EntreeUtilisateur.TABLE + " (" +
@@ -27,8 +28,10 @@ public class ITravelDbHelper extends SQLiteOpenHelper {
 			EntreeNouvelle._TEXTE + " TEXT, " + 
 			EntreeNouvelle._DATE + " TEXT, " +
 			EntreeNouvelle._HEURE + " TEXT, " +
-			EntreeNouvelle._LATITUDE + " TEXT, " +
-			EntreeNouvelle._LONGITUDE + " TEXT, " +
+			EntreeNouvelle._DATE_MAJ + " TEXT, " + 
+			EntreeNouvelle._HEURE_MAJ + " TEXT, " +
+			EntreeNouvelle._LATITUDE + " DOUBLE, " +
+			EntreeNouvelle._LONGITUDE + " DOUBLE, " +
 			EntreeNouvelle._PAYS + " TEXT, " +
 			EntreeNouvelle._VILLE + " TEXT, " +
 			EntreeNouvelle._IMAGE + " TEXT, " +
@@ -64,8 +67,12 @@ public class ITravelDbHelper extends SQLiteOpenHelper {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);	
 	}
 	
+	@Override
 	public void onCreate (SQLiteDatabase db) {
+	Log.i("", "Dans onCreate database");
 		db.execSQL(SQL_CREATE_TABLE_UTILISATEUR);
+		db.execSQL(SQL_CREATE_TABLE_NOUVELLE);
+		
 	}
 
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

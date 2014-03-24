@@ -7,7 +7,12 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MesNouvellesModifier" >
-
+	
+    <ScrollView
+        android:scrollbars="none"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+    
     <LinearLayout
         android:id="@+id/mes_nouvelles_modifier_linear_layout"
         android:layout_width="wrap_content"
@@ -52,7 +57,7 @@
         android:text="@string/mes_nouvelles_modifier_sauvegarder_btn" />
     
     </LinearLayout>
-
+	</ScrollView>
     
 
 </RelativeLayout>

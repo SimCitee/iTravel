@@ -1,10 +1,14 @@
 package model;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import model.*;
 
 public class MesNouvellesListeAdapteur  extends ArrayAdapter<Nouvelle>{
 	//Redéfinition du constructeur
@@ -37,7 +42,7 @@ public class MesNouvellesListeAdapteur  extends ArrayAdapter<Nouvelle>{
 			 } 
 			 
 			 Nouvelle p = getItem(position);
-			  
+	Log.i("", "NouvelleTexte : " + p.getNouvelleTexte()); 
 			 if (p != null) { 
 				 
 				 TextView ittv = (TextView) v.findViewById(com.android.itravel.R.id.mesNouvellesListeText);  
@@ -48,7 +53,24 @@ public class MesNouvellesListeAdapteur  extends ArrayAdapter<Nouvelle>{
 				 }
 				 
 				 if (iiv != null) {
-					 iiv.setImageResource(p.getImageId());
+				 
+					 //Image avec le path
+					 String imageCompleteName = Environment.getExternalStorageDirectory() + EnvironmentVariables.IMAGE_FOLDER + "/" + p.getImageId(); 
+			Log.i("", "Image a loader : " + imageCompleteName);	
+					 File imageFile = new File(imageCompleteName);
+					 
+					 //Vérifie si l'image existe
+					 if(imageFile.exists()) {
+	 Log.i("", "Image EXISTS");				 
+						 Bitmap myBitmap = BitmapFactory.decodeFile(imageCompleteName);
+						 iiv.setImageBitmap(myBitmap);
+					 }
+					 else
+					 {
+						//iiv.setImageResource(p.getImageId());
+					 }
+					 
+					 
 				 }
 			 }
 			 

@@ -14,5 +14,6 @@
 	<string name="title_activity_mes_nouvelles_modifier">MesNouvellesModifier</string>
 	<string name="mes_nouvelles_modifier_sauvegarder_btn">Sauvegarder</string>
 	<string name="title_activity_mes_nouvelles_ajouter">MesNouvellesAjouter</string>
-
+	
+	
 </resources>

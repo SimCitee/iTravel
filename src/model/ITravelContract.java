@@ -20,6 +20,7 @@ public class ITravelContract {
 		public static final String _UTILISATEUR_ID = "utilisateur_id";
 		public static final String _DATE_CREER = "date_creer";
 		public static final String _DATE_MAJ = "date_maj";
+		public static final String _HEURE_MAJ = "heure_maj";
 	}
 	
 	public static abstract class EntreeUtilisateur implements BaseColumns {

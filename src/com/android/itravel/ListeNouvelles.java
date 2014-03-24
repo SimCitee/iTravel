@@ -168,7 +168,7 @@ public class ListeNouvelles extends Activity {
 		protected String doInBackground(String... args) {
 						
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			JSONObject json = DataAccessController.getDataFromUrl(DataURL.getNouvellesVoyageur(), "GET", params);
+			JSONObject json = DataAccessController.getDataFromUrl(DataURL.NOUVELLES_VOYAGEURS, "GET", params);
 
 			try {
 				int success = json.getInt(TAG_SUCCES);	// valider le chargement
