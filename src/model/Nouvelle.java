@@ -14,6 +14,7 @@ public class Nouvelle {
 	private String pays;
 	private String ville;
 	private String imageId;
+	private Utilisateur utilisateur;
 	
 	public Nouvelle(){}
 	
@@ -103,6 +104,14 @@ public class Nouvelle {
 	
 	public void setImageId(String imageId) {
 		this.imageId = imageId;
+	}
+
+	public Utilisateur getUtilisateur() {
+		return utilisateur;
+	}
+
+	public void setUtilisateur(Utilisateur utilisateur) {
+		this.utilisateur = utilisateur;
 	}
 	
 	
