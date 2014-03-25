@@ -57,7 +57,8 @@
         </activity>
         <activity
             android:name="com.android.itravel.MesNouvellesConsulter"
-            android:label="@string/title_activity_mes_nouvelles_consulter" >
+            android:label="@string/title_activity_mes_nouvelles_consulter" 
+            android:parentActivityName="com.android.itravel.MesNouvelles">
         </activity>
     </application>
 

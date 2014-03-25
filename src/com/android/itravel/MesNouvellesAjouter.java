@@ -168,12 +168,12 @@ public class MesNouvellesAjouter extends Activity {
 			//Si aucune photo n'a été prise
 			if(photoFile == null)
 			{
-				Log.i("", "Pas image");
+				
 				intent.putExtra("id_image", "0"); //Pas d'image de fournit
 			}
 			else
 			{
-				Log.i("", "a une image");
+				
 				intent.putExtra("id_image", (String) photoFile.getName());
 				
 			}
@@ -194,8 +194,7 @@ public class MesNouvellesAjouter extends Activity {
 			if(photoLatitude == null || photoLongitude == null)
 			{
 				
-				Log.i("", "Latitude : " + gpsLatitude);
-				Log.i("", "Lonmgitudfe : " + gpsLongitude);
+				
 				intent.putExtra("latitude", gpsLatitude);
 				intent.putExtra("longitude", gpsLongitude);
 			}
@@ -243,8 +242,17 @@ public class MesNouvellesAjouter extends Activity {
 				photoLatitude =  exifPositionUtil.getLatitude();
 				photoLongitude = exifPositionUtil.getLongitude();
 				
+				//Si on ne peut pas prendre la position dans les métas de l'image,
+				//on consulte le service de location
+				if(photoLatitude == 0.0 || photoLongitude == 0.0)
+				{
+					photoLatitude = gpsLatitude;
+					photoLongitude = gpsLongitude;
+				}
+				
 				if(photoLatitude != null && photoLongitude != null)
 				{
+		
 					//Écrit la position dans le textview
 					t_position.setText(photoLatitude.toString() + ", " + photoLongitude.toString());
 				}
