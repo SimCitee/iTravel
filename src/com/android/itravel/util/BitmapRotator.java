@@ -31,7 +31,7 @@ public class BitmapRotator {
 		
 	}
 	
-	public void doRotaionIfNeeded()
+	public void doRotationIfNeeded()
 	{
 		ExifInterface exif2;
 		try {

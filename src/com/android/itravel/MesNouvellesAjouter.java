@@ -224,7 +224,7 @@ public class MesNouvellesAjouter extends Activity {
 
 			 ////////////////////////////////////////////////////////////
 			 BitmapRotator photoRotator = new BitmapRotator(photoFile.getAbsolutePath());
-			 photoRotator.doRotaionIfNeeded();
+			 photoRotator.doRotationIfNeeded();
 			 Bitmap myBitmap = photoRotator.getBitmap();
 			 photoRotator.save();
 	          
