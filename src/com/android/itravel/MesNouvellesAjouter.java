@@ -1,7 +1,14 @@
 package com.android.itravel;
 
 import com.android.itravel.R;
+import com.android.itravel.constant.EnvironmentVariables;
+import com.android.itravel.util.BitmapRotator;
+import com.android.itravel.util.ExifPositionUtil;
 
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -32,10 +39,6 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 
 
-import model.EnvironmentVariables;
-import model.ExifPositionUtil;
-import model.BitmapRotator;
-import model.PositionUtil;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
@@ -54,7 +57,10 @@ public class MesNouvellesAjouter extends Activity {
 	private TextView t_position = null;
 	private Double photoLatitude = null;
 	private Double photoLongitude = null;
-	
+	private Double gpsLatitude = null;
+	private Double gpsLongitude = null;
+	private LocationManager locationManager;
+	private String provider;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +82,17 @@ public class MesNouvellesAjouter extends Activity {
 		save.setOnClickListener(onSave);
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		
+		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+	    // Define the criteria how to select the locatioin provider -> use
+	    // default
+	    Criteria criteria = new Criteria();
+	    provider = locationManager.getBestProvider(criteria, false);
+	    Location location = locationManager.getLastKnownLocation(provider);
 
+	    gpsLatitude = location.getLatitude();
+	    gpsLongitude = location.getLongitude();
 	}
 
 	@Override
@@ -178,14 +194,10 @@ public class MesNouvellesAjouter extends Activity {
 			if(photoLatitude == null || photoLongitude == null)
 			{
 				
-				//Classe utilitaire qui ne récupère la position qu'une seule foisd
-				//PositionUtil positionUtil = new PositionUtil();
-				
-				
-				Double d = 22.22;
-				//TODO implanter la recherche des coordonnées du GPS
-				intent.putExtra("latitude", d);
-				intent.putExtra("longitude", d);
+				Log.i("", "Latitude : " + gpsLatitude);
+				Log.i("", "Lonmgitudfe : " + gpsLongitude);
+				intent.putExtra("latitude", gpsLatitude);
+				intent.putExtra("longitude", gpsLongitude);
 			}
 			else
 			{
@@ -253,5 +265,51 @@ public class MesNouvellesAjouter extends Activity {
 			 
 		 }
 	  }
+	
+	
+	/* Request updates at startup */
+	  @Override
+	  protected void onResume() {
+	    super.onResume();
+	    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,10000 ,10000.0f,onLocationChange);
+	    
+	  }
+	  
+	//Location listener
+	    LocationListener onLocationChange=new LocationListener() {
+	        public void onLocationChanged(Location loc) {
+	            //sets and displays the lat/long when a location is provided
+				Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
+				gpsLongitude = location.getLongitude();
+	        	gpsLatitude  = location.getLatitude();
+		        
+	        }
+
+			@Override
+			public void onProviderDisabled(String provider) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onProviderEnabled(String provider) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onStatusChanged(String provider, int status,
+					Bundle extras) {
+				// TODO Auto-generated method stub
+				
+			}
+	    };
+	        
+	    
+	    @Override
+	    public void onPause() {
+	        super.onPause();
+	        locationManager.removeUpdates(onLocationChange);
+	    }
 }

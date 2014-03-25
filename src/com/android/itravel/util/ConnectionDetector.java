@@ -2,7 +2,7 @@
  * Credits to http://www.androidhive.info/
  */
 
-package model;
+package com.android.itravel.util;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

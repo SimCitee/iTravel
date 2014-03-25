@@ -11,14 +11,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import model.ConnectionDetector;
-import model.DataAccessController;
-import model.DataURL;
-import model.ITravelContract.EntreeNouvelle;
-import model.ITravelContract.EntreeUtilisateur;
-import model.ITravelDbHelper;
+import com.android.itravel.constant.DataURL;
+import com.android.itravel.database.ITravelDbHelper;
+import com.android.itravel.database.ITravelContract.EntreeNouvelle;
+import com.android.itravel.database.ITravelContract.EntreeUtilisateur;
+import com.android.itravel.listadaptor.ListeNouvellesAdapteur;
+import com.android.itravel.util.ConnectionDetector;
+import com.android.itravel.util.DataAccessController;
+
 import model.JSONParser;
-import model.ListeNouvellesAdapteur;
 import model.Nouvelle;
 import android.os.AsyncTask;
 import android.os.Bundle;

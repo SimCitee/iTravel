@@ -1,4 +1,4 @@
-package model;
+package com.android.itravel.constant;
 
 /*
  * Contient les variables d'environnement de l'application

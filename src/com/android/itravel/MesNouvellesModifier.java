@@ -2,7 +2,8 @@ package com.android.itravel;
 
 import java.io.File;
 
-import model.EnvironmentVariables;
+import com.android.itravel.constant.EnvironmentVariables;
+
 import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;

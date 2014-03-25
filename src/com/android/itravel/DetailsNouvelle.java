@@ -8,13 +8,13 @@ import org.apache.http.NameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import model.ConnectionDetector;
-import model.DataAccessController;
-import model.DataURL;
-import model.ListeNouvellesAdapteur;
 import model.Nouvelle;
 
 import com.android.itravel.ListeNouvelles.LoadNouvellesUtilisateur;
+import com.android.itravel.constant.DataURL;
+import com.android.itravel.listadaptor.ListeNouvellesAdapteur;
+import com.android.itravel.util.ConnectionDetector;
+import com.android.itravel.util.DataAccessController;
 
 import android.os.AsyncTask;
 import android.os.Bundle;

@@ -1,13 +1,13 @@
-package model;
+package com.android.itravel.database;
 
-import model.ITravelContract.EntreeCommentaire;
-import model.ITravelContract.EntreeNouvelle;
-import model.ITravelContract.EntreeUtilisateur;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import com.android.itravel.database.ITravelContract.*;
+
 
 public class ITravelDbHelper extends SQLiteOpenHelper {
 	public static final int DATABASE_VERSION = 1;

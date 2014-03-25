@@ -1,9 +1,11 @@
-package model;
+package com.android.itravel.listadaptor;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+
+import com.android.itravel.constant.EnvironmentVariables;
 
 import android.content.Context;
 import android.graphics.Bitmap;

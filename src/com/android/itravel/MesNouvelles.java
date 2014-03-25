@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import com.android.itravel.R;
-import model.ITravelDbHelper;
-import model.MesNouvellesListeAdapteur;
+import com.android.itravel.database.ITravelDbHelper;
+import com.android.itravel.database.ITravelContract.EntreeNouvelle;
+import com.android.itravel.listadaptor.MesNouvellesListeAdapteur;
+
 import model.Nouvelle;
-import model.PositionUtil;
 import model.Utilisateur;
 import model.UtilisateurActif;
-import model.ITravelContract.EntreeNouvelle;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;

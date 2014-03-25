@@ -1,10 +1,12 @@
-package model;
+package com.android.itravel.util;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
+
+import model.JSONParser;
 
 import org.apache.http.NameValuePair;
 import org.json.JSONObject;

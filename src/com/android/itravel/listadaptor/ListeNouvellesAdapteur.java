@@ -1,8 +1,10 @@
-package model;
+package com.android.itravel.listadaptor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+
+import model.Nouvelle;
 
 import com.android.itravel.ListeNouvelles;
 import com.android.itravel.R;

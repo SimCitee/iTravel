@@ -1,4 +1,4 @@
-package model;
+package com.android.itravel.util;
 
 /*
  * Crédit : http://android-er.blogspot.ca/2010/01/convert-exif-gps-info-to-degree-format.html

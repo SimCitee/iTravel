@@ -1,4 +1,4 @@
-package model;
+package com.android.itravel.constant;
 
 public abstract class DataURL {
 	

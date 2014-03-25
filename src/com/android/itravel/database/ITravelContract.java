@@ -1,4 +1,4 @@
-package model;
+package com.android.itravel.database;
 
 import android.provider.BaseColumns;
 
