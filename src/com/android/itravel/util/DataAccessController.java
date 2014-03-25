@@ -6,7 +6,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
-import model.JSONParser;
 
 import org.apache.http.NameValuePair;
 import org.json.JSONObject;

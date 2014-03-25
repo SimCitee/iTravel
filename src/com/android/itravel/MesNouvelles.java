@@ -28,6 +28,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.view.View.OnClickListener;
+
 import android.widget.Toast;
 
 public class MesNouvelles extends Activity {
@@ -147,6 +149,28 @@ public class MesNouvelles extends Activity {
             }
 
         });
+		
+		//Clique d'une nouvelle pour voir son détail
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, final View view,
+					int position, long id) {
+		        
+				Nouvelle nouvelle = adapter.getItem(position);
+				
+				if(nouvelle != null)
+				{
+					Intent i = new Intent(MesNouvelles.this, MesNouvellesConsulter.class);
+					i.putExtra("image_id", nouvelle.getImageId());
+					i.putExtra("commentaire", nouvelle.getNouvelleTexte()); 
+					i.putExtra("latitude", nouvelle.getLatitude());
+					i.putExtra("longitude", nouvelle.getLongitude());
+					startActivity(i);
+				}
+			}
+
+		});
 
 	}
 

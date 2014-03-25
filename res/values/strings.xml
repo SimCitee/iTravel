@@ -2,21 +2,22 @@
 <resources>
 
     <string name="app_name">iTravel</string>
-	<string name="action_settings">Settings</string>
-	<string name="image_default">Image</string>
-	<string name="title_activity_liste_nouvelles">ListeNouvelles</string>
-	<string name="btnSeeMyPost">My posts</string>
-	<string name="title_activity_details_nouvelle">DetailsNouvelle</string>
-	<string name="btnDetailAddComment">Send</string>
-	<string name="txtDetailPosition">Position :</string>
-	<string name="title_activity_my_news">MyNews</string>
-	<string name="noInternetConnection">No internet connection</string>
-	<string name="title_activity_mes_nouvelles_modifier">MesNouvellesModifier</string>
-	<string name="mes_nouvelles_modifier_sauvegarder_btn">Sauvegarder</string>
-	<string name="title_activity_mes_nouvelles_ajouter">MesNouvellesAjouter</string>
-	
-	<string name="element_deleted">Élément supprimé</string>
-	<string name="element_added">Élément ajouté</string>
-	<string name="element_modified">Élément modifié</string>
-	
+    <string name="action_settings">Settings</string>
+    <string name="image_default">Image</string>
+    <string name="title_activity_liste_nouvelles">ListeNouvelles</string>
+    <string name="btnSeeMyPost">My posts</string>
+    <string name="title_activity_details_nouvelle">DetailsNouvelle</string>
+    <string name="btnDetailAddComment">Send</string>
+    <string name="txtDetailPosition">Position :</string>
+    <string name="title_activity_my_news">MyNews</string>
+    <string name="noInternetConnection">No internet connection</string>
+    <string name="title_activity_mes_nouvelles_modifier">MesNouvellesModifier</string>
+    <string name="mes_nouvelles_modifier_sauvegarder_btn">Sauvegarder</string>
+    <string name="title_activity_mes_nouvelles_ajouter">MesNouvellesAjouter</string>
+    <string name="element_deleted">Élément supprimé</string>
+    <string name="element_added">Élément ajouté</string>
+    <string name="element_modified">Élément modifié</string>
+    <string name="title_activity_mes_nouvelles_consulter">MesNouvellesConsulter</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>

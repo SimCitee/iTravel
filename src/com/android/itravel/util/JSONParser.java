@@ -2,7 +2,7 @@
  * Credits to http://www.androidhive.info/
  */
 
-package model;
+package com.android.itravel.util;
  
 import java.io.BufferedReader;
 import java.io.IOException;

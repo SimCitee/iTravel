@@ -18,8 +18,8 @@ import com.android.itravel.database.ITravelContract.EntreeUtilisateur;
 import com.android.itravel.listadaptor.ListeNouvellesAdapteur;
 import com.android.itravel.util.ConnectionDetector;
 import com.android.itravel.util.DataAccessController;
+import com.android.itravel.util.JSONParser;
 
-import model.JSONParser;
 import model.Nouvelle;
 import android.os.AsyncTask;
 import android.os.Bundle;
