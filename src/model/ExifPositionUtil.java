@@ -6,7 +6,7 @@ package model;
 import android.media.ExifInterface;
 
 /*
- * Contient des méthodes pour récupéré la position gps d'une image (exif) en string
+ * Contient des méthodes pour récupérer la position gps d'une image (exif) en string
  * et la changer en double (position GPS)
  */
 public class ExifPositionUtil {
@@ -58,7 +58,7 @@ public class ExifPositionUtil {
 	
 	@Override
 	public String toString() {
-	 // TODO Auto-generated method stub
+	 
 	 return (String.valueOf(latitude)
 	   + ", "
 	   + String.valueOf(longitude));

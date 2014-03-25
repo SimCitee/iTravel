@@ -42,7 +42,7 @@ public class MesNouvellesListeAdapteur  extends ArrayAdapter<Nouvelle>{
 			 } 
 			 
 			 Nouvelle p = getItem(position);
-	Log.i("", "NouvelleTexte : " + p.getNouvelleTexte()); 
+	
 			 if (p != null) { 
 				 
 				 TextView ittv = (TextView) v.findViewById(com.android.itravel.R.id.mesNouvellesListeText);  
@@ -54,22 +54,30 @@ public class MesNouvellesListeAdapteur  extends ArrayAdapter<Nouvelle>{
 				 
 				 if (iiv != null) {
 				 
-					 //Image avec le path
-					 String imageCompleteName = Environment.getExternalStorageDirectory() + EnvironmentVariables.IMAGE_FOLDER + "/" + p.getImageId(); 
-			Log.i("", "Image a loader : " + imageCompleteName);	
-					 File imageFile = new File(imageCompleteName);
-					 
-					 //Vérifie si l'image existe
-					 if(imageFile.exists()) {
-	 Log.i("", "Image EXISTS");				 
-						 Bitmap myBitmap = BitmapFactory.decodeFile(imageCompleteName);
-						 iiv.setImageBitmap(myBitmap);
+					 //S'il y a une image à charger
+					 if(!p.getImageId().equals("0"))
+					 {
+						 
+						 //Image avec le path
+						 String imageCompleteName = Environment.getExternalStorageDirectory() + EnvironmentVariables.IMAGE_FOLDER + "/" + p.getImageId(); 
+				
+						 File imageFile = new File(imageCompleteName);
+						 
+						 //Vérifie si l'image existe
+						 if(imageFile.exists()) {
+		 			 
+							 Bitmap myBitmap = BitmapFactory.decodeFile(imageCompleteName);
+							 iiv.setImageBitmap(myBitmap);
+						 }
+						 else
+						 {
+							//iiv.setImageResource(p.getImageId());
+						 }
 					 }
 					 else
 					 {
-						//iiv.setImageResource(p.getImageId());
+						 iiv.setImageResource(com.android.itravel.R.drawable.thumbnail_default);
 					 }
-					 
 					 
 				 }
 			 }
@@ -78,12 +86,7 @@ public class MesNouvellesListeAdapteur  extends ArrayAdapter<Nouvelle>{
 		} 
 		
 		private HashMap<Integer, Boolean> mSelection = new HashMap<Integer, Boolean>();
-	/*	 
-	    public SelectionAdapter(Context context, int resource,
-	            int textViewResourceId, String[] objects) {
-	        super(context, resource, textViewResourceId, objects);
-	    }
-	*/
+	
 	    public void setNewSelection(int position, boolean value) {
 	        mSelection.put(position, value);
 	        notifyDataSetChanged();

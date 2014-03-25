@@ -12,27 +12,29 @@
     <RelativeLayout
         android:id="@+id/mesNouvellesRelativeLayout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content" 
+        android:paddingRight="10dp">
 
         <ImageView
             android:id="@+id/mesNouvellesListeImage"
             android:layout_width="47dp"
             android:layout_height="47dp"
-            android:src="@drawable/ic_launcher" />
+            android:src="@drawable/thumbnail_default" />
     </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/mesNouvellesLinearLayout"
-        android:layout_width="match_parent"
+        android:layout_width="227dp"
         android:layout_height="47dp"
-        android:layout_weight="0.85"
         android:orientation="vertical" >
 
         <TextView
             android:id="@+id/mesNouvellesListeText"
-            android:layout_width="238dp"
+            android:layout_width="226dp"
             android:layout_height="46dp"
-            android:text="TextView" />
+            android:text="TextView"
+            android:textSize="20sp" />
+
     </LinearLayout>
 
 </LinearLayout>

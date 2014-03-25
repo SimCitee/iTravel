@@ -7,12 +7,15 @@ import com.android.itravel.R;
 import model.ITravelDbHelper;
 import model.MesNouvellesListeAdapteur;
 import model.Nouvelle;
+import model.PositionUtil;
 import model.Utilisateur;
 import model.UtilisateurActif;
 import model.ITravelContract.EntreeNouvelle;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -25,13 +28,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.Toast;
 
 public class MesNouvelles extends Activity {
 	
 	private static final int EDIT_ITEM_REQUEST = 10;
 	private static final int ADD_ITEM_REQUEST = 20;
-	
-	
 	
 	protected ActionMode mActionMode;
 	private MesNouvellesListeAdapteur adapter = null;
@@ -40,8 +42,7 @@ public class MesNouvelles extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mes_nouvelles);
-		
-		
+
 		//Set l'utilisateur actif
 		Utilisateur u = new Utilisateur();
 		u.setUtilisateurId(1000);
@@ -52,15 +53,13 @@ public class MesNouvelles extends Activity {
 		
 		
 		ArrayList<Nouvelle> myList = new ArrayList<Nouvelle>();
+
 		
-		
-		///////////////////////
-		//FETCH
+		//FETCH la bd
 		ITravelDbHelper mDbHelper = new ITravelDbHelper(this);
 		SQLiteDatabase db = mDbHelper.getReadableDatabase(); 
 	 
-		// Define a projection that specifies which columns from the database 
-		// you will actually use after this query. 
+		
 		String[] projection={EntreeNouvelle._ID, 
 			EntreeNouvelle._IMAGE,
 			EntreeNouvelle._TEXTE,
@@ -81,27 +80,21 @@ public class MesNouvelles extends Activity {
 		String[] selectionArgs = {};
 	       		
 		Cursor cursor = db.query( 
-			EntreeNouvelle.TABLE, // The table to query 
-			projection, // The columns to return 
-			selection, // The columns for the WHERE clause 
-			selectionArgs, // The values for the WHERE clause 
-			null, // don't group the rows 
-			null, // don't filter by row groups 
-			sortOrder // The sort order 
+			EntreeNouvelle.TABLE, 	// The table to query 
+			projection, 			// The columns to return 
+			selection,			 	// The columns for the WHERE clause 
+			selectionArgs, 			// The values for the WHERE clause 
+			null, 					// don't group the rows 
+			null, 					// don't filter by row groups 
+			sortOrder 				// The sort order 
 		); 
 		
-		
-		
 		if (cursor.moveToFirst()) {
-Log.i("", "Cursor not empty");
 			do {
-				Log.i("", "Fetch data");
-				Long idNouvelle = cursor.getLong(cursor.getColumnIndex(EntreeNouvelle._ID)); 
-				
-				String imageId = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._IMAGE));
 
+				Long idNouvelle = cursor.getLong(cursor.getColumnIndex(EntreeNouvelle._ID)); 
+				String imageId = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._IMAGE));
 	    		String commentaire = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._TEXTE)); 
-	    		
 	    		Double latitude = cursor.getDouble(cursor.getColumnIndex(EntreeNouvelle._LATITUDE)); 
 	    		Double longitude = cursor.getDouble(cursor.getColumnIndex(EntreeNouvelle._LONGITUDE)); 
 	    		String date = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._DATE)); 
@@ -109,14 +102,11 @@ Log.i("", "Cursor not empty");
 	    		String dateMAJ = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._DATE_MAJ)); 
 	    		String heureMAJ = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._HEURE_MAJ)); 
 			
-				
-			
 				Nouvelle nouvelle = new Nouvelle();
 		
 				nouvelle.setNouvelleId(idNouvelle);
 				nouvelle.setImageId(imageId);
 				nouvelle.setNouvelleTexte(commentaire);
-		
 				nouvelle.setLatitude(latitude);
 				nouvelle.setLongitude(longitude);
 				nouvelle.setNouvelleDate(date);
@@ -129,17 +119,8 @@ Log.i("", "Cursor not empty");
 	        	   
 			} while (cursor.moveToNext());
 		}
-		else
-		{
-			Log.i("", "Cursor IS empty");
-		}
 		
-		
-		
-			
-			
-		
-	
+
 		//1er param  : référence au contexte (toujours this)
 		//2eme param : Activité qui définit le layout à utilisé
 		//3eme param : Array ou liste d'objets utilisé pour créer la liste
@@ -150,9 +131,9 @@ Log.i("", "Cursor not empty");
 		 
 		//Bind la liste avec l'adapter (qui contient le layout et les données)
 		listView.setAdapter(adapter);
-				
+			
 		listView.setOnItemLongClickListener(new OnItemLongClickListener() {
- 
+
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View view, int position, long arg3) {     	
             	if (mActionMode != null) { 
@@ -167,11 +148,6 @@ Log.i("", "Cursor not empty");
 
         });
 
-		
-		///
-		//getFragmentManager().beginTransaction()
-        //.replace(android.R.id.content, new SettingsFragment())
-        //.commit();
 	}
 
 	@Override
@@ -229,8 +205,18 @@ Log.i("", "Cursor not empty");
     };
   
    
-    private void deleteSelectedItem(Nouvelle itemSelected) {
-    	adapter.remove(itemSelected);
+    @SuppressWarnings("unchecked")
+	private void deleteSelectedItem(Nouvelle nouvelle) {
+    	
+    	//Crée un arraylist pour passer plusieurs paramètres au thread de modification
+		ArrayList<Object> threadParams = new ArrayList<Object>();
+		threadParams.add(0, nouvelle);
+		threadParams.add(1, this);
+    	
+		//Thread de suppression
+		new SupprimerDonneeNouvelleThread().execute(threadParams);
+		
+    	adapter.remove(nouvelle);
     	adapter.notifyDataSetChanged();
     }
   
@@ -239,11 +225,12 @@ Log.i("", "Cursor not empty");
  	
     	Intent intent = new Intent(this, MesNouvellesModifier.class);
 
-		intent.putExtra("id", String.valueOf(position));
-		intent.putExtra("image_id", nouvelle.getImageId());
+		intent.putExtra("listPosition", position);
+		intent.putExtra("nouvelle_id", nouvelle.getNouvelleId());
+		intent.putExtra("id_image", nouvelle.getImageId());
 		intent.putExtra("commentaire", nouvelle.getNouvelleTexte());
-		intent.putExtra("position_pays", nouvelle.getPays());
-		intent.putExtra("position_ville", nouvelle.getVille());
+		intent.putExtra("latitude", nouvelle.getLatitude());
+		intent.putExtra("longitude", nouvelle.getLongitude());
 		
 		startActivityForResult(intent, EDIT_ITEM_REQUEST);
 		
@@ -252,7 +239,8 @@ Log.i("", "Cursor not empty");
     
  
    
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) 
     {
     	
@@ -262,20 +250,23 @@ Log.i("", "Cursor not empty");
  
     		Bundle dataMap = data.getExtras();
     	
-    		Integer position = Integer.parseInt((String) dataMap.get("id"));
-    		
-    		//Integer imageId = Integer.parseInt((String) dataMap.get("image_id"));
-    		
-    		//TODO modifier pour vrai id de l'image
-    		Integer imageId = 0;
-    		
-    		
+    		Integer position = dataMap.getInt("id");
+   
     		String commentaire = (String) dataMap.get("commentaire");
     		
+    		//Récupère l'objet nouvelle dans la liste
     		Nouvelle nouvelle = adapter.getItem(position);
-    		//nouvelle.setImageId(imageId);
+    		
     		nouvelle.setNouvelleTexte(commentaire);
-
+    		
+    		//Crée un arraylist pour passer plusieurs paramètres au thread de modification
+    		ArrayList<Object> threadParams = new ArrayList<Object>();
+    		threadParams.add(0, nouvelle);
+    		threadParams.add(1, this);
+    		
+    		//Thread de modification
+    		new ModifierDonneeNouvelleThread().execute(threadParams);
+    		
     		adapter.notifyDataSetChanged();
     		
     		mActionMode.finish();
@@ -288,19 +279,11 @@ Log.i("", "Cursor not empty");
     		if(requestCode == ADD_ITEM_REQUEST && resultCode == RESULT_OK)
     		{
     			Bundle dataMap = data.getExtras();
-   	    	
-        		//Integer position = Integer.parseInt((String) dataMap.get("id"));
-        		
-        		
-       		
-        		//Integer imageId = Integer.parseInt((String) dataMap.get("image_id"));
-        		
-       		
-        		
+   		
         		Long idNouvelle = dataMap.getLong("nouvelle_id");
         		
         		String idImage = (String) dataMap.get("id_image");
-        		
+     		
         		String commentaire = (String) dataMap.get("commentaire");
         		
         		Double latitude = dataMap.getDouble ("latitude", 2);
@@ -321,32 +304,15 @@ Log.i("", "Cursor not empty");
         		nouvelle.setNouvelleHeure(heure);
         		nouvelle.setNouvelleDateMAJ(date);
         		nouvelle.setNouvelleHeureMAJ(heureMAJ);
+        		
+        		//Crée un arraylist pour passer plusieurs paramètres au thread d'ajout
+        		ArrayList<Object> threadParams = new ArrayList<Object>();
+        		threadParams.add(0, nouvelle);
+        		threadParams.add(1, this);
+        		
+        		//Thread d'ajout
+        		new AjouterDonneeNouvelleThread().execute(threadParams);
         		   		
-        		//Ajout dans la bd
-        		ITravelDbHelper mDbHelper = new ITravelDbHelper(this);
-        		
-        		//Test DB
-        		// Gets the data repository in write mode 
-        		SQLiteDatabase dbWrite = mDbHelper.getWritableDatabase(); 
-        		 
-        		// Create a new map of values, where column names are the keys 
-        		ContentValues values = new ContentValues(); 
-        		 
-        		values.put(EntreeNouvelle._ID, idNouvelle); 
-        		values.put(EntreeNouvelle._IMAGE, idImage); 
-        		values.put(EntreeNouvelle._TEXTE, commentaire);
-        		values.put(EntreeNouvelle._LATITUDE, latitude); 
-        		values.put(EntreeNouvelle._LONGITUDE, longitude); 
-        		values.put(EntreeNouvelle._DATE, date); 
-        		values.put(EntreeNouvelle._HEURE, heure); 
-        		values.put(EntreeNouvelle._DATE_MAJ, dateMAJ); 
-        		values.put(EntreeNouvelle._HEURE_MAJ, heureMAJ); 
-        		 
-        		// Insert the new row, returning the primary key value of the new row 
-        		long newRowId = dbWrite.insert(EntreeNouvelle.TABLE, null, values);
-             		
-        		Log.i("", "NewRowId : " + newRowId);
-        		
         		//Ajout à la liste
         		adapter.add(nouvelle);
         		adapter.notifyDataSetChanged();
@@ -356,8 +322,6 @@ Log.i("", "Cursor not empty");
     	
     }
     
-   
-   
     public boolean onPrepareOptionsMenu(Menu menu) {
         //  preparation code here
         return super.onPrepareOptionsMenu(menu);
@@ -370,17 +334,131 @@ Log.i("", "Cursor not empty");
     	
     	//Ajout
         if (item.getItemId() == R.id.mes_nouvelles_actionbar_add_id) {
-            //startActivity(new Intent(this, CoursesActivity.class));
-        	
-        	
+            
         	startActivityForResult(new Intent(this, MesNouvellesAjouter.class), ADD_ITEM_REQUEST);
-        	
         }
-        
-        
-       
-        
+
         return super.onOptionsItemSelected(item);
     }
   
+    
+    /*
+     * Ajout d'une nouvelle dans la base de données (asynchrone)
+     */
+    private class AjouterDonneeNouvelleThread extends AsyncTask<ArrayList<Object>, Void, String> {
+
+        @Override
+        protected String doInBackground(ArrayList<Object>... params) {
+  
+        	Nouvelle nouvelle = (Nouvelle) params[0].get(0);
+        	Context mesNouvelles = (Context) params[0].get(1);
+        	
+        	//Ajout dans la bd
+    		ITravelDbHelper mDbHelper = new ITravelDbHelper(mesNouvelles);
+    		
+    		// Gets the data repository in write mode 
+    		SQLiteDatabase dbWrite = mDbHelper.getWritableDatabase(); 
+    		 
+    		// Create a new map of values, where column names are the keys 
+    		ContentValues values = new ContentValues(); 
+    		 
+    		values.put(EntreeNouvelle._ID, nouvelle.getNouvelleId()); 
+    		values.put(EntreeNouvelle._IMAGE, nouvelle.getImageId()); 
+    		values.put(EntreeNouvelle._TEXTE, nouvelle.getNouvelleTexte());
+    		values.put(EntreeNouvelle._LATITUDE, nouvelle.getLatitude());
+    		values.put(EntreeNouvelle._LONGITUDE, nouvelle.getLongitude()); 
+    		values.put(EntreeNouvelle._DATE, nouvelle.getNouvelleDate()); 
+    		values.put(EntreeNouvelle._HEURE, nouvelle.getNouvelleHeure()); 
+    		values.put(EntreeNouvelle._DATE_MAJ, nouvelle.getNouvelleDateMAJ()); 
+    		values.put(EntreeNouvelle._HEURE_MAJ, nouvelle.getNouvelleHeureMAJ());
+    		 
+    		// Insert the new row, returning the primary key value of the new row 
+    		long newRowId = dbWrite.insert(EntreeNouvelle.TABLE, null, values);
+         		
+    		return getResources().getString(com.android.itravel.R.string.element_added);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+        	Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+        }
+
+    }
+    
+    
+    /*
+     * Modification d'une nouvelle dans la base de données (asynchrone)
+     */
+    private class ModifierDonneeNouvelleThread extends AsyncTask<ArrayList<Object>, Void, String> {
+
+        @Override
+        protected String doInBackground(ArrayList<Object>... params) {
+
+        	Nouvelle nouvelle = (Nouvelle) params[0].get(0);
+        	Context mesNouvelles = (Context) params[0].get(1);
+        	
+        	//Ajout dans la bd
+    		ITravelDbHelper mDbHelper = new ITravelDbHelper(mesNouvelles);
+    		
+    		//Test DB
+    		// Gets the data repository in write mode 
+    		SQLiteDatabase dbWrite = mDbHelper.getWritableDatabase(); 
+    		 
+    		// Create a new map of values, where column names are the keys 
+    		ContentValues values = new ContentValues(); 
+    		 
+    		//values.put(EntreeNouvelle._ID, nouvelle.getNouvelleId()); 
+    		//values.put(EntreeNouvelle._IMAGE, nouvelle.getImageId()); 
+    		values.put(EntreeNouvelle._TEXTE, nouvelle.getNouvelleTexte());
+		
+    		int nbRowAffected = dbWrite.update(EntreeNouvelle.TABLE, values, EntreeNouvelle._ID + " = " + nouvelle.getNouvelleId(), null);		 
+  
+    		
+    		return getResources().getString(com.android.itravel.R.string.element_modified);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+        	Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+        }
+   
+    }
+    
+    /*
+     * Suppression d'une nouvelle dans la base de données (asynchrone)
+     */
+    private class SupprimerDonneeNouvelleThread extends AsyncTask<ArrayList<Object>, Void, String> {
+
+        @Override
+        protected String doInBackground(ArrayList<Object>... params) {
+    
+   
+    
+        	Nouvelle nouvelle = (Nouvelle) params[0].get(0);
+        	Context mesNouvelles = (Context) params[0].get(1);
+        	
+        	//Ajout dans la bd
+    		ITravelDbHelper mDbHelper = new ITravelDbHelper(mesNouvelles);
+ 
+    		// Gets the data repository in write mode 
+    		SQLiteDatabase dbWrite = mDbHelper.getWritableDatabase(); 
+
+    		int nbRowAffected = dbWrite.delete(EntreeNouvelle.TABLE, EntreeNouvelle._ID + " = " + 
+    				nouvelle.getNouvelleId(), null);
+    		
+            return getResources().getString(com.android.itravel.R.string.element_deleted);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            //TextView txt = (TextView) findViewById(R.id.output);
+            //txt.setText("Executed"); // txt.setText(result);
+            // might want to change "executed" for the returned string passed
+            // into onPostExecute() but that is upto you
+        	
+        	Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+        }
+    }
+    
 }

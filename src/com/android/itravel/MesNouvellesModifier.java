@@ -1,8 +1,15 @@
 package com.android.itravel;
 
+import java.io.File;
+
+import model.EnvironmentVariables;
 import android.os.Bundle;
+import android.os.Environment;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -13,11 +20,11 @@ import android.widget.TextView;
 public class MesNouvellesModifier extends Activity {
 
 	
-		ImageView i_image = null;
-		EditText e_comment = null;
-		TextView t_position = null;
+		private ImageView i_image = null;
+		private EditText e_comment = null;
+		private TextView t_position = null;
 		
-		//Button save;
+		private int itemListPosition;
 
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
@@ -32,25 +39,34 @@ public class MesNouvellesModifier extends Activity {
 			
 			Intent intent = getIntent();
 				
-			//String title = intent.getStringExtra("title");
-			//String description = intent.getStringExtra("description");
 			
-			String id = intent.getStringExtra("id");
-			String imageId = intent.getStringExtra("image_id");
+			itemListPosition = intent.getIntExtra("listPosition", 0);
+			String nouvelleId = intent.getStringExtra("nouvelle_id");
+			String imageId = intent.getStringExtra("id_image");
 			String commentaire = intent.getStringExtra("commentaire");
-			String positionPays = intent.getStringExtra("position_pays");
-			String positionVille = intent.getStringExtra("position_ville");
+			Double positionPays = intent.getDoubleExtra("latitude", 0);
+			Double positionVille = intent.getDoubleExtra("longitude", 0);
 			
+			//Image avec le path
+			 String imageCompleteName = Environment.getExternalStorageDirectory() + EnvironmentVariables.IMAGE_FOLDER + "/" + imageId; 
+			 	
+			 File imageFile = new File(imageCompleteName);
+			 
+			 //Vérifie si l'image existe
+			 if(imageFile.exists()) {
+				 
+				 //Affiche l'image
+				 Bitmap myBitmap = BitmapFactory.decodeFile(imageCompleteName);
+				 i_image.setImageBitmap(myBitmap);
+			 }
 			
-			//String icon_id = intent.getStringExtra("icon_id");
+			 e_comment.setText(commentaire);
+			 t_position.setText(positionPays + ", " + positionVille);
 			
-			e_comment.setText(commentaire);
-			t_position.setText(positionPays + ", " + positionVille);
+			 save = (Button)findViewById(R.id.mes_nouvelles_modifier_sauvegarder_button);
+			 save.setOnClickListener(onSave);
 			
-			save = (Button)findViewById(R.id.mes_nouvelles_modifier_sauvegarder_button);
-			save.setOnClickListener(onSave);
-			
-			getActionBar().setDisplayHomeAsUpEnabled(true);
+			 getActionBar().setDisplayHomeAsUpEnabled(true);
 			
 			
 		}
@@ -69,9 +85,18 @@ public class MesNouvellesModifier extends Activity {
 		
 				Intent intentResult = new Intent();
 			
-				intentResult.putExtra("id", getIntent().getStringExtra("id"));
-				//intentResult.putExtra("image_id", i_image.getId());
-				intentResult.putExtra("commentaire", e_comment.getText().toString());		
+				intentResult.putExtra("id", itemListPosition);
+				
+				//Commentaire
+				if(e_comment.getText().length() > 0)
+				{
+					intentResult.putExtra("commentaire", e_comment.getText().toString());
+				}
+				else
+				{
+					Log.i("", "Pas de texte");
+					intentResult.putExtra("commentaire", "");
+				}
 
 				setResult(RESULT_OK, intentResult);
 							
@@ -79,8 +104,5 @@ public class MesNouvellesModifier extends Activity {
 			}
 
 		};
-
-	
-
 
 }

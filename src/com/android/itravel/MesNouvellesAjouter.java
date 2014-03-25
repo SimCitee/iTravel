@@ -4,6 +4,7 @@ import com.android.itravel.R;
 
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -13,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -32,6 +34,8 @@ import java.util.Calendar;
 
 import model.EnvironmentVariables;
 import model.ExifPositionUtil;
+import model.BitmapRotator;
+import model.PositionUtil;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
@@ -39,21 +43,12 @@ import android.widget.ImageButton;
 
 
 public class MesNouvellesAjouter extends Activity {
-	
-	
-	private final static String DEBUG_TAG = "MakePhotoActivity";
-	private Camera camera;
-	//private int cameraId = 0;
+
 	  
 	private File photoFile = null;		//Fichier d'image physique
-	private Bitmap photo = null;		//Bitmap pour afficher en miniature
-	//private Date imageDate = null;
-	Timestamp photoTimestamp = null;
+	private Timestamp photoTimestamp = null;
 	
 	private static final int CAMERA_REQUEST_CODE = 1;
-	
-	//private Bitmap bitmap;	//Image prise par l'utilisateur
-	
 	private ImageView i_image = null;
 	private EditText e_comment = null;
 	private TextView t_position = null;
@@ -69,96 +64,40 @@ public class MesNouvellesAjouter extends Activity {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mes_nouvelles_ajouter);
-		
-	///////////////////	
-/*
-		// do we have a camera?
-	    if (!getPackageManager()
-	        .hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-	      Toast.makeText(this, "No camera on this device", Toast.LENGTH_LONG)
-	          .show();
-	    } else {
-	      cameraId = findFrontFacingCamera();
-	      if (cameraId < 0) {
-	        Toast.makeText(this, "No front facing camera found.",
-	            Toast.LENGTH_LONG).show();
-	      } else {
-	        camera = Camera.open(cameraId);
-	      }
-	    }
-*/
-	//////////////////    
-	    
-		
+
 		i_image = (ImageView)findViewById(R.id.mes_nouvelles_ajouter_image);
 		e_comment  = (EditText)findViewById(R.id.mes_nouvelles_ajouter_commentaire_text);
 		t_position = (TextView)findViewById(R.id.mes_nouvelles_ajouter_position_textview);
-		
-		
-		
-		Intent intent = getIntent();
-			
-		//String title = intent.getStringExtra("title");
-		//String description = intent.getStringExtra("description");
-		//String icon_id = intent.getStringExtra("icon_id");
-		
-		//e_title.setText(title);
-		//e_desc.setText(description);
-		
+
 		takePicture = (ImageButton)findViewById(R.id.mes_nouvelles_ajouter_photo_button);
 		takePicture.setOnClickListener(onPictureTaken);
 		
 		save = (Button)findViewById(R.id.mes_nouvelles_ajouter_sauvegarder_button);
 		save.setOnClickListener(onSave);
-		
-		
-		
-		
+
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-/*
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.add, menu);
-*/
+
 		return true;
 
 	}
-	
 	
 	private View.OnClickListener onPictureTaken = new View.OnClickListener() {
 
 		@Override
 		public void onClick(View view) {
-			
-/*
-			String path=Environment.getExternalStorageDirectory().getPath() + "/DCIM/Camera/";
-			File file = new File(path,"test111111111.jpg");
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			Uri outputFileUri = Uri.fromFile(file);
-	*/		
-			
-			
+				
 			//Vérifie si le folder de l'application existe
 			File imageDirectory = new File(Environment.getExternalStorageDirectory() + EnvironmentVariables.IMAGE_FOLDER);
 			if(!imageDirectory.isDirectory()) {
-				Log.i("", "Folder NOT found : " + Environment.getExternalStorageDirectory() + EnvironmentVariables.IMAGE_FOLDER);
-				
+
 				//Crée le dossier d'image de l'application
 				imageDirectory.mkdir();
 			}
-			else
-			{
-				Log.i("", "Folder found : " + Environment.getExternalStorageDirectory() + EnvironmentVariables.IMAGE_FOLDER);
-			}
-			
 			
 			//Chemin où sont stocké les images
 			String path=Environment.getExternalStorageDirectory().getPath() + EnvironmentVariables.IMAGE_FOLDER;
@@ -188,8 +127,6 @@ public class MesNouvellesAjouter extends Activity {
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
 
 			startActivityForResult(intent, CAMERA_REQUEST_CODE);
-		    
-		    
 		}
 
 	};
@@ -211,16 +148,16 @@ public class MesNouvellesAjouter extends Activity {
 
 			//Identifiant de la nouvelle (il provindra éventuellement du serveur)
 			intent.putExtra("nouvelle_id", Long.parseLong(strTimestamp));
-			//photoTimestamp = new Timestamp(calendar.getTime().getTime());
 			
 			//Si aucune photo n'a été prise
 			if(photoFile == null)
 			{
-				
+				Log.i("", "Pas image");
 				intent.putExtra("id_image", "0"); //Pas d'image de fournit
 			}
 			else
 			{
+				Log.i("", "a une image");
 				intent.putExtra("id_image", (String) photoFile.getName());
 				
 			}
@@ -228,7 +165,7 @@ public class MesNouvellesAjouter extends Activity {
 			//Commentaire
 			if(e_comment.getText().length() > 0)
 			{
-	Log.i("", "Le texte : " + e_comment.getText());
+	
 				intent.putExtra("commentaire", e_comment.getText().toString());
 			}
 			else
@@ -240,6 +177,11 @@ public class MesNouvellesAjouter extends Activity {
 			//Si les coordonnées ne peuvent être prise dans la photo
 			if(photoLatitude == null || photoLongitude == null)
 			{
+				
+				//Classe utilitaire qui ne récupère la position qu'une seule foisd
+				//PositionUtil positionUtil = new PositionUtil();
+				
+				
 				Double d = 22.22;
 				//TODO implanter la recherche des coordonnées du GPS
 				intent.putExtra("latitude", d);
@@ -247,7 +189,6 @@ public class MesNouvellesAjouter extends Activity {
 			}
 			else
 			{
-				
 				//Coordonnée prise sur la photo
 				intent.putExtra("latitude", photoLatitude);
 				intent.putExtra("longitude", photoLongitude);
@@ -264,60 +205,19 @@ public class MesNouvellesAjouter extends Activity {
 
 	};
 	
-/*	
-	@Override
-	  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		
-		 InputStream stream = null;
-		 if (requestCode == CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_OK)
-		 {
-			 try
-			 {
-				 stream = getContentResolver().openInputStream(data.getData());
-				 bitmap = BitmapFactory.decodeStream(stream);
-
-				 i_image.setImageBitmap(bitmap);
-		     
-			 }catch(FileNotFoundException e)
-			 {
-				 e.printStackTrace();
-				 
-			 }
-			 finally
-			 {
-				 if (stream != null)
-				 {
-					 try
-					 {
-						 stream.close();
-					 }
-					 catch(IOException f)
-					 {
-						 f.printStackTrace();
-					 }
-				 }
-			 }
-		 }
-	  }
-	  
-	  
-	*/
-	
-	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		
-		 InputStream stream = null;
 		 if (requestCode == CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_OK)
 		 {
-		
-			 Log.i("", "Longeur de l'image " + photoFile.length());
+
+			 ////////////////////////////////////////////////////////////
+			 BitmapRotator photoRotator = new BitmapRotator(photoFile.getAbsolutePath());
+			 photoRotator.doRotaionIfNeeded();
+			 Bitmap myBitmap = photoRotator.getBitmap();
+			 photoRotator.save();
+	          
+			 ///////////////////////////////////////////////////////////
 			 
-			 
-			 //photo = (Bitmap) data.getExtras().get("data");
-			 //i_image.setImageBitmap(photo);
-			 
-			 
-			 Bitmap myBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
 			 i_image.setImageBitmap(myBitmap);
 			 
 			 
@@ -341,126 +241,17 @@ public class MesNouvellesAjouter extends Activity {
 				
 				e.printStackTrace();
 			}
-			 
-			 
-			 Log.i("", "Longeur de l'image " + photoFile.length());
-			 
-		 /*    
-
-
-		     // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
-		     Uri tempUri = getImageUri(getApplicationContext(), photo);
-
-		     // CALL THIS METHOD TO GET THE ACTUAL PATH
-		     File finalFile = new File(getRealPathFromURI(tempUri));
-
-		     Log.i("", "Filenameeee : " + getRealPathFromURI(tempUri));
-		     
-		     
-		*/	 
-			 
-			 /*
-			 try
-			 {
-				 stream = getContentResolver().openInputStream(data.getData());
-				 bitmap = BitmapFactory.decodeStream(stream);
-
-				 i_image.setImageBitmap(bitmap);
-		     
-			 }catch(FileNotFoundException e)
-			 {
-				 e.printStackTrace();
-				 
-			 }
-			 finally
-			 {
-				 if (stream != null)
-				 {
-					 try
-					 {
-						 stream.close();
-					 }
-					 catch(IOException f)
-					 {
-						 f.printStackTrace();
-					 }
-				 }
-			 }
-			 
-			 */
 		 }
 		 
 		 //Opération annulée
 		 else if (requestCode == CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_CANCELED)
 		 {
 			 //Supprime le fichier d'image si l'opération de prise de photo a été annulée
-			 Log.i("", "Longeur de l'image " + photoFile.length());
+			 
 			 photoFile.delete();
 			 photoFile = null;
 			 
 		 }
 	  }
-	
-	
-	private int findFrontFacingCamera() {
-	    int cameraId = -1;
-	    // Search for the front facing camera
-	    int numberOfCameras = Camera.getNumberOfCameras();
-	    for (int i = 0; i < numberOfCameras; i++) {
-	      CameraInfo info = new CameraInfo();
-	      Camera.getCameraInfo(i, info);
-	      if (info.facing == CameraInfo.CAMERA_FACING_FRONT) {
-	        Log.d(DEBUG_TAG, "Camera found");
-	        cameraId = i;
-	        break;
-	      }
-	    }
-	    return cameraId;
-	  }
-	
-	@Override
-	  protected void onPause() {
-	    if (camera != null) {
-	      camera.release();
-	      camera = null;
-	    }
-	    super.onPause();
-	  }
-	
-	
-	public Uri getImageUri(Context inContext, Bitmap inImage) {
-	    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-	    inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-	    String path = Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-	    return Uri.parse(path);
-	}
 
-	public String getRealPathFromURI(Uri uri) {
-	    Cursor cursor = getContentResolver().query(uri, null, null, null, null); 
-	    cursor.moveToFirst(); 
-	    int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA); 
-	    return cursor.getString(idx); 
-	}
-	
-	
-	/*
-	
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-	    super.onConfigurationChanged(newConfig);
-
-	    // Checks the orientation of the screen
-	    if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-	    	if(photo != null){
-	    		i_image.setImageBitmap(photo);
-	    	}
-	    } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-	    	
-	    	if(photo != null){
-	    		i_image.setImageBitmap(photo);
-	    	}
-	    }
-	}
-	
-	*/
 }
