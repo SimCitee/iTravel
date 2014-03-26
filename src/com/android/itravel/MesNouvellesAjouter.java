@@ -250,6 +250,7 @@ public class MesNouvellesAjouter extends Activity {
 					photoLongitude = gpsLongitude;
 				}
 				
+				//Affichage de la position si elle est trouvée
 				if(photoLatitude != null && photoLongitude != null)
 				{
 		
