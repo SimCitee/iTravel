@@ -18,6 +18,7 @@
     <string name="element_added">Élément ajouté</string>
     <string name="element_modified">Élément modifié</string>
     <string name="title_activity_mes_nouvelles_consulter">Détails nouvelle</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="txtMyNewsCommentary">Laisser un commentaire</string>
+    <string name="txtMyNewsPosition">Votre position</string>
 
 </resources>

@@ -6,6 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#FFF"
     tools:context=".MesNouvellesConsulter" >
 
    <ScrollView
@@ -28,21 +29,53 @@
            android:layout_height="match_parent"
            android:src="@drawable/thumbnail_default" />
 
-       <TextView
-           android:id="@+id/mes_nouvelles_consulter_commentaire_textview"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_marginBottom="20dp"
-           android:layout_marginTop="20dp"
-           android:layout_weight="0.52"
-           android:text="TextView" />
+       
+       
+       <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#E8E8E8"
+            android:orientation="vertical" >
 
-       <TextView
-           android:id="@+id/mes_nouvelles_consulter_position_textview"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_marginTop="20dp"
-           android:text="TextView" />
+            <TextView
+                android:id="@+id/txtConsulterMesNouvellesCommentaire"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/txtMyNewsCommentary" />
+
+                <TextView
+		           android:id="@+id/mes_nouvelles_consulter_commentaire_textview"
+		           android:layout_width="match_parent"
+		           android:layout_height="match_parent"		   
+		           android:layout_weight="0.52"
+		           android:background="#FFF"
+		           android:text="TextView" />
+
+       </LinearLayout>
+
+       <LinearLayout
+            android:layout_marginBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#E8E8E8"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/txtConsulterMesNouvellesPosition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/txtMyNewsPosition" />
+
+            <TextView
+	           android:id="@+id/mes_nouvelles_consulter_position_textview"
+	           android:layout_width="match_parent"
+	           android:layout_height="wrap_content"
+	           android:text="TextView"
+	           android:background="#FFF" />
+
+       </LinearLayout>
+       
+       
    </LinearLayout>
 
 	</ScrollView>

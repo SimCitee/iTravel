@@ -6,6 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#FFF"
     tools:context=".MesNouvellesAjouter" >
 	
     <ScrollView
@@ -28,34 +29,75 @@
             android:layout_height="match_parent"
             android:src="@drawable/thumbnail_default" />
 
-        <ImageButton
-            android:id="@+id/mes_nouvelles_ajouter_photo_button"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_menu_camera" />
-        
-        <EditText
-	        android:id="@+id/mes_nouvelles_ajouter_commentaire_text"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="45dp"
-	        android:ems="10"
-	        android:inputType="textMultiLine" 
-	        tools:text="Commentaire">
+            android:gravity="center"
+            android:orientation="vertical" >
 
-	        <requestFocus />
-	    </EditText>
+            <ImageButton
+                android:id="@+id/mes_nouvelles_ajouter_photo_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_menu_camera" />
 
-    <TextView
-        android:id="@+id/mes_nouvelles_ajouter_position_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#E8E8E8"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/txtAjoutMesNouvellesCommentaire"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/txtMyNewsCommentary" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="71dp" >
+
+                <EditText
+                    android:id="@+id/mes_nouvelles_ajouter_commentaire_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFF"
+                    android:ems="10"
+                    android:inputType="textMultiLine"
+                    tools:text="Commentaire" >
+
+                    <requestFocus />
+                </EditText>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#E8E8E8"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/txtAjoutMesNouvellesPosition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/txtMyNewsPosition" />
+
+            <TextView
+                android:id="@+id/mes_nouvelles_ajouter_position_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFF" />
+
+        </LinearLayout>
 
     <Button
         android:id="@+id/mes_nouvelles_ajouter_sauvegarder_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:text="@string/mes_nouvelles_modifier_sauvegarder_btn" />
