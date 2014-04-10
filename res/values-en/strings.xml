@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">iTravel</string>
+    <string name="action_settings">Settings</string>
+    <string name="image_default">Image</string>
+    <string name="title_activity_liste_nouvelles">Newsfeed</string>
+    <string name="btnSeeMyPost">My posts</string>
+    <string name="title_activity_details_nouvelle">News details</string>
+    <string name="btnDetailAddComment">Send</string>
+    <string name="txtDetailPosition">Position :</string>
+    <string name="title_activity_my_news">My news</string>
+    <string name="noInternetConnection">No internet connection</string>
+    <string name="title_activity_mes_nouvelles_modifier">Edit post</string>
+    <string name="mes_nouvelles_modifier_sauvegarder_btn">Save</string>
+    <string name="title_activity_mes_nouvelles_ajouter">Add news</string>
+    <string name="element_deleted">Post deleted</string>
+    <string name="element_added">Added post</string>
+    <string name="element_modified">Updated post</string>
+    <string name="title_activity_mes_nouvelles_consulter">News details</string>
+    <string name="txtMyNewsCommentary">Leave a comment</string>
+    <string name="txtMyNewsPosition">Your position</string>
+    <string name="txtLogin">Login</string>
+    <string name="txtYourEmail">Your email</string>
+    <string name="txtYourPassword">Password</string>
+    <string name="txtAuthenticate">Authentication</string>
+    <string name="btnOpenAccount">Sign up</string>
+    <string name="txtAuthenticating">Authentication...</string>
+    <string name="alertFailedLogin">Failed to authenticate</string>
+    <string name="title_activity_nouveau_compte">New account</string>
+    <string name="hintFirstName">Firstname</string>
+    <string name="hintLastName">Lastname</string>
+    <string name="txtInfosPerso">Personnal info</string>
+    <string name="hintRepeatPassword">Repeat password</string>
+    <string name="txtNewAccountTitle">New account</string>
+    <string name="btnNewAccountSave">Save</string>
+    <string name="btnNewAccountCancel">Cancel</string>
+
+</resources>

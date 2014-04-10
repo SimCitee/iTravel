@@ -1,0 +1,93 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.android.itravel.NouveauCompte"
+    tools:ignore="MergeRootFrame" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp" >
+
+        <TextView
+            android:id="@+id/txtNouveauCompteTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/txtNewAccountTitle"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/txtInfoPersonnelle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="@string/txtInfosPerso" />
+
+        <EditText
+            android:id="@+id/edtNouveauCompteFirstname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:ems="10"
+            android:hint="@string/hintFirstName"
+            android:inputType="textPersonName" >
+
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:id="@+id/edtNouveauCompteLastname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:ems="10"
+            android:hint="@string/hintLastName"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/edtNouveauCompteEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:ems="10"
+            android:hint="@string/txtYourEmail"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/edtNouveauComptePassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:ems="10"
+            android:hint="@string/txtYourPassword"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/edtNouveauCompteRPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:ems="10"
+            android:hint="@string/hintRepeatPassword" 
+            android:inputType="textPassword"/>
+
+        <Button
+            android:id="@+id/btnNouveauComtpeSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btnNewAccountSave" />
+
+        <Button
+            android:id="@+id/btnNouveauComtpeCancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btnNewAccountCancel" />
+
+    </LinearLayout>
+
+</FrameLayout>
+

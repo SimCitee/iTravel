@@ -79,17 +79,14 @@ public class ListeNouvelles extends Activity {
         vListe.setOnItemClickListener(onPostClick);
         
         chargerNouvelles();
-        
-        
-		/*boolean isInternetActive = cd.isConnectingToInternet();
 		
-		if (isInternetActive) {
+		if (cd.isConnectingToInternet()) {
 			new LoadNouvellesUtilisateur().execute();
 			vListe.setOnItemClickListener(onPostClick);
 		} 
 		else {
 			Toast.makeText(getApplicationContext(), getResources().getString(R.string.noInternetConnection), Toast.LENGTH_SHORT).show();
-		}*/
+		}
 	}
 	
 	private void chargerNouvelles() {

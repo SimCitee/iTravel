@@ -20,5 +20,24 @@
     <string name="title_activity_mes_nouvelles_consulter">Détails nouvelle</string>
     <string name="txtMyNewsCommentary">Laisser un commentaire</string>
     <string name="txtMyNewsPosition">Votre position</string>
+    <string name="txtLogin">Se connecter</string>
+    <string name="txtYourEmail">Votre courriel</string>
+    <string name="txtYourPassword">Mot de passe</string>
+    <string name="txtAuthenticate">Authentification</string>
+    <string name="btnOpenAccount">Ouvrir un compte</string>
+    <string name="txtAuthenticating">Authentification...</string>
+    <string name="alertFailedLogin">Échec de l\'authentification</string>
+    <string name="title_activity_nouveau_compte">NouveauCompte</string>
+    <string name="hintFirstName">Votre prenom</string>
+    <string name="hintLastName">Votre nom</string>
+    <string name="txtInfosPerso">Informations personnelles</string>
+    <string name="hintRepeatPassword">Répéter mot de passe</string>
+    <string name="txtNewAccountTitle">Nouveau compte</string>
+    <string name="btnNewAccountSave">Enregister</string>
+    <string name="btnNewAccountCancel">Annuler</string>
+    <string name="alertSavingAccount">Saving account info...</string>
+    <string name="alertErrorSavingAccount">Il y a eu problème avec l\'enregistrement, veuillez essayer à nouveau.</string>
+    <string name="alertMissingField">Veuillez remplir tout les champs.</string>
+    <string name="alertPasswordsDiffer">Les mots de passes ne sont pas identique.</string>
 
 </resources>
