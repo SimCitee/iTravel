@@ -1,26 +1,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/main_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="#FFF"
     tools:context=".MesNouvellesConsulter" >
 
    <ScrollView
-        android:scrollbars="none"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+       android:layout_width="fill_parent"
+       android:layout_height="fill_parent"
+       android:padding="20dp"
+       android:scrollbars="none" >
         
    <LinearLayout
        android:id="@+id/mes_nouvelles_ajouter_linear_layout"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       android:layout_alignParentLeft="true"
-       android:layout_alignParentRight="true"
-       android:layout_centerHorizontal="true"
        android:orientation="vertical" >
 
        <ImageView
@@ -34,22 +28,22 @@
        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#E8E8E8"
             android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/txtConsulterMesNouvellesCommentaire"
+                style="@style/medium_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/txtMyNewsCommentary" />
 
                 <TextView
-		           android:id="@+id/mes_nouvelles_consulter_commentaire_textview"
-		           android:layout_width="match_parent"
-		           android:layout_height="match_parent"		   
-		           android:layout_weight="0.52"
-		           android:background="#FFF"
-		           android:text="TextView" />
+                    android:id="@+id/mes_nouvelles_consulter_commentaire_textview"
+                    style="@style/medium_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.52"
+                    android:text="TextView" />
 
        </LinearLayout>
 
@@ -57,21 +51,21 @@
             android:layout_marginBottom="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#E8E8E8"
             android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/txtConsulterMesNouvellesPosition"
+                style="@style/medium_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/txtMyNewsPosition" />
 
             <TextView
-	           android:id="@+id/mes_nouvelles_consulter_position_textview"
-	           android:layout_width="match_parent"
-	           android:layout_height="wrap_content"
-	           android:text="TextView"
-	           android:background="#FFF" />
+                android:id="@+id/mes_nouvelles_consulter_position_textview"
+                style="@style/medium_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
 
        </LinearLayout>
        

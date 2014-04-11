@@ -77,8 +77,9 @@ public class ListeNouvelles extends Activity {
                    
         vListe.setAdapter(adapteur);
         vListe.setOnItemClickListener(onPostClick);
+        btnMyPost.setOnClickListener(onMyPost);
         
-        chargerNouvelles();
+        //chargerNouvelles();
 		
 		if (cd.isConnectingToInternet()) {
 			new LoadNouvellesUtilisateur().execute();
@@ -125,6 +126,15 @@ public class ListeNouvelles extends Activity {
 		getMenuInflater().inflate(R.menu.liste_nouvelles, menu);
 		return true;
 	}
+	
+	private Button.OnClickListener onMyPost=new Button.OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			Intent intent = new Intent(ListeNouvelles.this, MesNouvelles.class);
+    		startActivity(intent);
+		}
+	};
 	
 	private AdapterView.OnItemClickListener onPostClick=new AdapterView.OnItemClickListener() {
 

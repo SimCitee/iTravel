@@ -44,4 +44,12 @@ public class ITravelContract {
 		public static final String _DATE_MAJ = "date_maj";
 	}
 	
+	public static abstract class SyncNouvelles implements BaseColumns {
+		public static final String TABLE = "synchronisation";
+		public static final String _ID = "id";
+		public static final String _WSID  = "wsid";
+		public static final String _JSON = "json";
+		public static final String _DATE_MAJ = "date_maj";
+	}
+	
 }

@@ -5,7 +5,8 @@ package model;
  */
 public class UtilisateurActif {
 	
-	private Utilisateur utilisateur;
+	private Utilisateur utilisateur = null;
+	private static UtilisateurActif _instance = null;
 	
 	
 	public Utilisateur getUtilisateur() {
@@ -17,20 +18,15 @@ public class UtilisateurActif {
 		this.utilisateur = utilisateur;
 	}
 
-
 	private UtilisateurActif()
 	{}
  
 	
-	private static class SingletonHolder
-	{		
-		
-		private final static UtilisateurActif instance = new UtilisateurActif();
-	}
- 
-	
 	public static UtilisateurActif getInstance()
 	{
-		return SingletonHolder.instance;
+		if (_instance == null) {
+			_instance = new UtilisateurActif();
+		}
+		return _instance;
 	}
 }

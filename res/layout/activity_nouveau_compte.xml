@@ -1,6 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
+    style="@style/main_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.android.itravel.NouveauCompte"
@@ -18,10 +19,12 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:text="@string/txtNewAccountTitle"
+            android:textColor="#fff"
             android:textSize="20sp" />
 
         <TextView
             android:id="@+id/txtInfoPersonnelle"
+            style="@style/medium_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
@@ -29,6 +32,7 @@
 
         <EditText
             android:id="@+id/edtNouveauCompteFirstname"
+            style="@style/input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
@@ -41,6 +45,7 @@
 
         <EditText
             android:id="@+id/edtNouveauCompteLastname"
+            style="@style/input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
@@ -50,6 +55,7 @@
 
         <EditText
             android:id="@+id/edtNouveauCompteEmail"
+            style="@style/input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
@@ -59,6 +65,7 @@
 
         <EditText
             android:id="@+id/edtNouveauComptePassword"
+            style="@style/input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
@@ -68,21 +75,24 @@
 
         <EditText
             android:id="@+id/edtNouveauCompteRPassword"
+            style="@style/input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:ems="10"
-            android:hint="@string/hintRepeatPassword" 
-            android:inputType="textPassword"/>
+            android:hint="@string/hintRepeatPassword"
+            android:inputType="textPassword" />
 
         <Button
             android:id="@+id/btnNouveauComtpeSave"
+            style="@style/button_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/btnNewAccountSave" />
 
         <Button
             android:id="@+id/btnNouveauComtpeCancel"
+            style="@style/button_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/btnNewAccountCancel" />

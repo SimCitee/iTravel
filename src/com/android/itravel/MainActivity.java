@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import model.Nouvelle;
 
+import com.android.itravel.NouveauCompte.EnregistrerUtilisateur;
 import com.android.itravel.constant.DataURL;
 import com.android.itravel.database.ITravelDbHelper;
 import com.android.itravel.listadaptor.ListeNouvellesAdapteur;
@@ -79,8 +80,16 @@ public class MainActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
 			
+			Intent intent = new Intent(MainActivity.this, ListeNouvelles.class);
+			
+    		startActivity(intent);
+			
+			/*if (cd.isConnectingToInternet()) {
+				new AuthentifierUtilisateur().execute();
+			} else {
+				Toast.makeText(getApplicationContext(), getResources().getString(R.string.noInternetConnection), Toast.LENGTH_SHORT).show();
+			}*/
 		}
 	};
 	

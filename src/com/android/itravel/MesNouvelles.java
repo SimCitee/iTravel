@@ -56,6 +56,7 @@ public class MesNouvelles extends Activity {
 		
 		ArrayList<Nouvelle> myList = new ArrayList<Nouvelle>();
 
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		//FETCH la bd
 		ITravelDbHelper mDbHelper = new ITravelDbHelper(this);

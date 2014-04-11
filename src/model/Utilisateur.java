@@ -7,6 +7,16 @@ public class Utilisateur {
 	private String prenom;
 	
 	
+	public Utilisateur() {	
+	}
+	
+	public Utilisateur(int id, String courriel, String nom, String prenom) {
+		this.utilisateurId = id;
+		this.courriel = courriel;
+		this.nom = nom;
+		this.prenom = prenom;
+	}
+	
 	public int getUtilisateurId() {
 		return utilisateurId;
 	}

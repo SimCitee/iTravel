@@ -7,7 +7,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:background="#b4e0ff"
+        android:orientation="horizontal"
+        android:paddingBottom="3dp"
+        android:paddingTop="3dp" >
     
 	    <RelativeLayout
 	        android:layout_width="wrap_content"
@@ -20,8 +23,9 @@
 	            android:layout_height="wrap_content"
 	            android:layout_alignParentLeft="true"
 	            android:layout_alignParentTop="true"
-	            android:src="@drawable/ic_launcher" 
-	            android:contentDescription="@string/image_default"/>
+	            android:layout_marginRight="6dp"
+	            android:contentDescription="@string/image_default"
+	            android:src="@drawable/thumbnail_default_small" />
 	
 	    </RelativeLayout>
 	
@@ -34,13 +38,18 @@
 	            android:id="@+id/txtListeNomContact"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:text="@string/app_name" />
+	            android:layout_marginTop="4dp"
+	            android:text="@string/app_name"
+	            android:textColor="#fff" />
 	
 	        <TextView
 	            android:id="@+id/txtListeCommentaire"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:text="@string/app_name" />
+	            android:layout_marginTop="2dp"
+	            android:text="@string/app_name"
+	            android:textColor="#fff"
+	            android:textSize="13sp" />
 	
 	    </LinearLayout>
 
@@ -53,7 +62,9 @@
 	            android:id="@+id/txtListePostTime"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:text="TextView" />
+	            android:text="TextView"
+	            android:textColor="#fff"
+	            android:textSize="16sp" />
 
 	    </RelativeLayout>
 

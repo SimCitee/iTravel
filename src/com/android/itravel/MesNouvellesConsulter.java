@@ -32,12 +32,12 @@ public class MesNouvellesConsulter extends Activity {
 		
 		Intent intent = getIntent();
 		
-		
 		String imageId = intent.getStringExtra("image_id");
 		String commentaire = intent.getStringExtra("commentaire");
 		Double longitude = intent.getDoubleExtra("longitude", 0);
 		Double latitude = intent.getDoubleExtra("latitude", 0);
 		
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		//Image avec le path
 		 String imageCompleteName = Environment.getExternalStorageDirectory() + EnvironmentVariables.IMAGE_FOLDER + "/" + imageId; 

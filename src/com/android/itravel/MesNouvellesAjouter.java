@@ -83,7 +83,6 @@ public class MesNouvellesAjouter extends Activity {
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 	    // Define the criteria how to select the locatioin provider -> use
 	    // default

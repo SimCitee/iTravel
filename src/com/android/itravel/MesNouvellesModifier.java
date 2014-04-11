@@ -39,7 +39,8 @@ public class MesNouvellesModifier extends Activity {
 			Button save;
 			
 			Intent intent = getIntent();
-				
+			
+			getActionBar().setDisplayHomeAsUpEnabled(true);
 			
 			itemListPosition = intent.getIntExtra("listPosition", 0);
 			String nouvelleId = intent.getStringExtra("nouvelle_id");
