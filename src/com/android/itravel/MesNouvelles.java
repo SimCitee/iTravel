@@ -1,24 +1,47 @@
 package com.android.itravel;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.InputStreamEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.android.itravel.R;
+import com.android.itravel.constant.DataURL;
+import com.android.itravel.constant.EnvironmentVariables;
 import com.android.itravel.database.ITravelDbHelper;
 import com.android.itravel.database.ITravelContract.EntreeNouvelle;
+import com.android.itravel.listadaptor.ListeNouvellesAdapteur;
 import com.android.itravel.listadaptor.MesNouvellesListeAdapteur;
+import com.android.itravel.util.DataAccessController;
+import com.android.itravel.util.Encryption;
 
 import model.Nouvelle;
 import model.Utilisateur;
 import model.UtilisateurActif;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -34,11 +57,18 @@ import android.widget.Toast;
 
 public class MesNouvelles extends Activity {
 	
+	private Context context = this;
+	//private ListView listView;
+	//private ArrayList<Nouvelle> listeNouvelles = new ArrayList<Nouvelle>();
+	
 	private static final int EDIT_ITEM_REQUEST = 10;
 	private static final int ADD_ITEM_REQUEST = 20;
 	
 	protected ActionMode mActionMode;
 	private MesNouvellesListeAdapteur adapter = null;
+	private JSONObject jsonServer;
+	private ArrayList<Nouvelle> mesNouvelles;
+	private ListView listView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,17 +82,17 @@ public class MesNouvelles extends Activity {
 		u.setNom("Handfield");
 		u.setPrenom("Pierre-Luc");
 		UtilisateurActif.getInstance().setUtilisateur(u);
+
+
 		
-		
-		ArrayList<Nouvelle> myList = new ArrayList<Nouvelle>();
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		
+/*
 		//FETCH la bd
 		ITravelDbHelper mDbHelper = new ITravelDbHelper(this);
 		SQLiteDatabase db = mDbHelper.getReadableDatabase(); 
-	 
-		
+
+
 		String[] projection={EntreeNouvelle._ID, 
 			EntreeNouvelle._IMAGE,
 			EntreeNouvelle._TEXTE,
@@ -72,16 +102,16 @@ public class MesNouvelles extends Activity {
 			EntreeNouvelle._HEURE,
 			EntreeNouvelle._DATE_MAJ,
 			EntreeNouvelle._HEURE_MAJ}; 
-	 
+
 		// How you want the results sorted in the resulting Cursor 
 		String sortOrder = EntreeNouvelle._DATE_MAJ + " DESC"; 
-	 
+
 		//Champs de la clause WHERE
 		String selection = "";
-	
+
 		//Valeur des champs de la clause WHERE
 		String[] selectionArgs = {};
-	       		
+
 		Cursor cursor = db.query( 
 			EntreeNouvelle.TABLE, 	// The table to query 
 			projection, 			// The columns to return 
@@ -91,7 +121,7 @@ public class MesNouvelles extends Activity {
 			null, 					// don't filter by row groups 
 			sortOrder 				// The sort order 
 		); 
-		
+
 		if (cursor.moveToFirst()) {
 			do {
 
@@ -104,9 +134,9 @@ public class MesNouvelles extends Activity {
 	    		String heure = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._HEURE)); 
 	    		String dateMAJ = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._DATE_MAJ)); 
 	    		String heureMAJ = cursor.getString(cursor.getColumnIndex(EntreeNouvelle._HEURE_MAJ)); 
-			
+
 				Nouvelle nouvelle = new Nouvelle();
-		
+
 				nouvelle.setNouvelleId(idNouvelle);
 				nouvelle.setImageId(imageId);
 				nouvelle.setNouvelleTexte(commentaire);
@@ -116,33 +146,38 @@ public class MesNouvelles extends Activity {
 				nouvelle.setNouvelleHeure(heure);
 				nouvelle.setNouvelleDateMAJ(dateMAJ);
 				nouvelle.setNouvelleHeureMAJ(heureMAJ);
-				
+
 				//Liste d'items
 				myList.add(nouvelle);
-	        	   
+
 			} while (cursor.moveToNext());
 		}
+*/
 		
-
 		//1er param  : référence au contexte (toujours this)
 		//2eme param : Activité qui définit le layout à utilisé
 		//3eme param : Array ou liste d'objets utilisé pour créer la liste
-		adapter = new MesNouvellesListeAdapteur(this, R.layout.liste_mes_nouvelles_layout, myList);
-		
+		adapter = new MesNouvellesListeAdapteur(this, R.layout.liste_mes_nouvelles_layout, new ArrayList<Nouvelle>());
+
 		//Cherche la liste à laquel on veut ajoute les données
-		ListView listView = (ListView) findViewById(R.id.mesNouvelleslistView);
-		 
+		listView = (ListView) findViewById(R.id.mesNouvelleslistView);
+
 		//Bind la liste avec l'adapter (qui contient le layout et les données)
 		listView.setAdapter(adapter);
-			
-		listView.setOnItemLongClickListener(new OnItemLongClickListener() {
 
+		
+		new AfficherListeDonneeNouvelleThread().execute("");
+		
+		listView.setOnItemLongClickListener(new OnItemLongClickListener() {
+			
+			
+			
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View view, int position, long arg3) {     	
             	if (mActionMode != null) { 
 		        	 return false; 
 	        	 } 
-				
+
 	        	 mActionMode = startActionMode(mActionModeCallback); 
 	        	 mActionMode.setTag(adapter.getItem(position));
 	        	 view.setSelected(true); 
@@ -150,16 +185,16 @@ public class MesNouvelles extends Activity {
             }
 
         });
-		
+
 		//Clique d'une nouvelle pour voir son détail
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, final View view,
 					int position, long id) {
-		        
+
 				Nouvelle nouvelle = adapter.getItem(position);
-				
+
 				if(nouvelle != null)
 				{
 					Intent i = new Intent(MesNouvelles.this, MesNouvellesConsulter.class);
@@ -402,7 +437,102 @@ public class MesNouvelles extends Activity {
          		
     		return getResources().getString(com.android.itravel.R.string.element_added);
         }
+/*
+    	@Override
+        protected String doInBackground(ArrayList<Object>... args) {
+  
+    		//Nouvelle à ajouter
+        	Nouvelle nouvelle = (Nouvelle) args[0].get(0);
+        	//Context mesNouvelles = (Context) params[0].get(1);
+*/       	
+        	
+    		/* 
+    		values.put(EntreeNouvelle._ID, nouvelle.getNouvelleId()); 
+    		values.put(EntreeNouvelle._IMAGE, nouvelle.getImageId()); 
+    		values.put(EntreeNouvelle._TEXTE, nouvelle.getNouvelleTexte());
+    		values.put(EntreeNouvelle._LATITUDE, nouvelle.getLatitude());
+    		values.put(EntreeNouvelle._LONGITUDE, nouvelle.getLongitude()); 
+    		values.put(EntreeNouvelle._DATE, nouvelle.getNouvelleDate()); 
+    		values.put(EntreeNouvelle._HEURE, nouvelle.getNouvelleHeure()); 
+    		values.put(EntreeNouvelle._DATE_MAJ, nouvelle.getNouvelleDateMAJ()); 
+    		values.put(EntreeNouvelle._HEURE_MAJ, nouvelle.getNouvelleHeureMAJ());
+    		 */
+/*
+        	List<NameValuePair> params = new ArrayList<NameValuePair>();
+			
+			String nouvelleText = nouvelle.getNouvelleTexte();
+			
+			
+			String imageCompleteName = Environment.getExternalStorageDirectory() + EnvironmentVariables.IMAGE_FOLDER + "/" + nouvelle.getImageId(); 
+			
+			 File imageFile = new File(imageCompleteName);
+			 
+			 //Vérifie si l'image existe
+			 if(imageFile.exists()) {
+		 
+				 //Bitmap myBitmap = BitmapFactory.decodeFile(imageCompleteName);
+				 Log.i("", "Dans if image");
+				 
+				 //params.add(new BasicNameValuePair("image", myBitmap.toString()));
+				
+				 File file = new File(imageCompleteName);
+				 
+				 
+				 try {
+				     HttpClient httpclient = new DefaultHttpClient();
 
+				     HttpPost httppost = new HttpPost(DataURL.AJOUTER_UTILISATEUR);
+				     
+				     InputStreamEntity reqEntity = new InputStreamEntity(
+				             new FileInputStream(file), -1);
+				     reqEntity.setContentType("binary/octet-stream");
+				     reqEntity.setChunked(true); // Send in multiple parts if needed
+				     httppost.setEntity(reqEntity);
+				     HttpResponse response = httpclient.execute(httppost);
+				     
+				     Log.i("", "Reponse ajout image : " + response.toString());
+
+				 } catch (Exception e) {
+				     // show error
+				 }
+			 }
+			
+			// Send email and password	
+			params.add(new BasicNameValuePair("nouvelle_texte", nouvelleText));
+			
+			
+			
+			JSONObject json = DataAccessController.getDataFromUrl(DataURL.AJOUTER_NOUVELLE, "POST", params);
+			
+			try {
+				String success = json.getString("success");
+				
+				Log.i("", "Retour serveur : " + success);
+				
+				//Toast.makeText(getApplicationContext(), success, Toast.LENGTH_SHORT).show();
+				
+				
+				int success = json.getInt(TAG_SUCCES);	// valider le chargement
+				
+				// si succes chargement
+				if (success == 1) {
+					savedAccount = true;
+				} 
+				else {
+					Toast.makeText(getApplicationContext(), getResources().getString(R.string.alertErrorSavingAccount), Toast.LENGTH_SHORT).show();
+				}
+				
+			}
+			catch (JSONException e) {
+				e.printStackTrace();
+			}
+    		
+        	
+        	
+         		
+    		return getResources().getString(com.android.itravel.R.string.element_added);
+        }
+  */  	
         @Override
         protected void onPostExecute(String result) {
         	Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
@@ -415,33 +545,41 @@ public class MesNouvelles extends Activity {
      * Modification d'une nouvelle dans la base de données (asynchrone)
      */
     private class ModifierDonneeNouvelleThread extends AsyncTask<ArrayList<Object>, Void, String> {
+    	
+    	@Override
+        protected String doInBackground(ArrayList<Object>... args) {
 
-        @Override
-        protected String doInBackground(ArrayList<Object>... params) {
-
-        	Nouvelle nouvelle = (Nouvelle) params[0].get(0);
-        	Context mesNouvelles = (Context) params[0].get(1);
+        	Nouvelle nouvelle = (Nouvelle) args[0].get(0);
         	
-        	//Ajout dans la bd
-    		ITravelDbHelper mDbHelper = new ITravelDbHelper(mesNouvelles);
+        	List<NameValuePair> params = new ArrayList<NameValuePair>();
+			
+			
+			// Send email and password	
+			params.add(new BasicNameValuePair("nouvelle_id", nouvelle.getNouvelleId().toString()));
+			params.add(new BasicNameValuePair("texte_nouvelle", nouvelle.getNouvelleTexte()));
+			
+			
+			JSONObject json = DataAccessController.getDataFromUrl(DataURL.MODIFIER_NOUVELLE, "POST", params);
+			
+			try {
+				int success = json.getInt("etat");	// valider le chargement
+			
+				if (success == 1) {
+					return getResources().getString(com.android.itravel.R.string.element_modified);
+				} 
+				else {
+					return getResources().getString(com.android.itravel.R.string.element_not_modified);
+				}
+				
+				
+			}
+			catch (JSONException e) {
+				e.printStackTrace();
+			}
     		
-    		//Test DB
-    		// Gets the data repository in write mode 
-    		SQLiteDatabase dbWrite = mDbHelper.getWritableDatabase(); 
-    		 
-    		// Create a new map of values, where column names are the keys 
-    		ContentValues values = new ContentValues(); 
-    		 
-    		//values.put(EntreeNouvelle._ID, nouvelle.getNouvelleId()); 
-    		//values.put(EntreeNouvelle._IMAGE, nouvelle.getImageId()); 
-    		values.put(EntreeNouvelle._TEXTE, nouvelle.getNouvelleTexte());
-		
-    		int nbRowAffected = dbWrite.update(EntreeNouvelle.TABLE, values, EntreeNouvelle._ID + " = " + nouvelle.getNouvelleId(), null);		 
-  
-    		
-    		return getResources().getString(com.android.itravel.R.string.element_modified);
+    		return getResources().getString(com.android.itravel.R.string.element_not_modified);
         }
-
+    	
         @Override
         protected void onPostExecute(String result) {
 
@@ -455,35 +593,117 @@ public class MesNouvelles extends Activity {
      */
     private class SupprimerDonneeNouvelleThread extends AsyncTask<ArrayList<Object>, Void, String> {
 
-        @Override
-        protected String doInBackground(ArrayList<Object>... params) {
-    
-   
-    
-        	Nouvelle nouvelle = (Nouvelle) params[0].get(0);
-        	Context mesNouvelles = (Context) params[0].get(1);
+    	@Override
+        protected String doInBackground(ArrayList<Object>... args) {
+
+        	Nouvelle nouvelle = (Nouvelle) args[0].get(0);
         	
-        	//Ajout dans la bd
-    		ITravelDbHelper mDbHelper = new ITravelDbHelper(mesNouvelles);
- 
-    		// Gets the data repository in write mode 
-    		SQLiteDatabase dbWrite = mDbHelper.getWritableDatabase(); 
+        	List<NameValuePair> params = new ArrayList<NameValuePair>();
+			
+			params.add(new BasicNameValuePair("nouvelle_id", nouvelle.getNouvelleId().toString()));
 
-    		int nbRowAffected = dbWrite.delete(EntreeNouvelle.TABLE, EntreeNouvelle._ID + " = " + 
-    				nouvelle.getNouvelleId(), null);
+			JSONObject json = DataAccessController.getDataFromUrl(DataURL.SUPPRIMER_NOUVELLE, "POST", params);
+			
+			try {
+				int success = json.getInt("etat");	// valider le chargement
+			
+				if (success == 1) {
+					return getResources().getString(com.android.itravel.R.string.element_deleted);
+				} 
+				else {
+					return getResources().getString(com.android.itravel.R.string.element_not_deleted);
+				}
+				
+				
+			}
+			catch (JSONException e) {
+				e.printStackTrace();
+			}
     		
-            return getResources().getString(com.android.itravel.R.string.element_deleted);
+    		return getResources().getString(com.android.itravel.R.string.element_not_deleted);
         }
-
+    	
         @Override
         protected void onPostExecute(String result) {
-            //TextView txt = (TextView) findViewById(R.id.output);
-            //txt.setText("Executed"); // txt.setText(result);
-            // might want to change "executed" for the returned string passed
-            // into onPostExecute() but that is upto you
-        	
+
         	Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
         }
     }
     
+    /*
+     * Affichage de la liste de "mes nouvelles" avec
+     */
+    private class AfficherListeDonneeNouvelleThread extends AsyncTask<String, Void, List<Nouvelle>> {
+    	
+    	private ProgressDialog dialog;
+    	
+        @Override
+        protected ArrayList<Nouvelle> doInBackground(String... args) {
+        	ArrayList<Nouvelle> listeNouvelles = new ArrayList<Nouvelle>();
+        	List<NameValuePair> params = new ArrayList<NameValuePair>();
+        	
+        	//TODO Mettre le bon utilisateur
+        	//Integer userId = 2; //UtilisateurActif.getInstance().getUtilisateur().getUtilisateurId();
+        	Integer userId = UtilisateurActif.getInstance().getUtilisateur().getUtilisateurId();
+        	
+        	
+        	//Identifiant de l'utilisateur actuel
+    		params.add(new BasicNameValuePair("utilisateur_id", userId.toString()));
+    		
+    		
+    		try {	
+    			//Cherche le json sur le serveur
+    			jsonServer = DataAccessController.getDataFromUrl(DataURL.CONSULTER_MES_NOUVELLES, "POST", params);
+    			//Tableau d'objets
+    		    JSONArray jsonRows= jsonServer.getJSONArray("data");   
+    		    
+    		    for(int i=0;i<jsonRows.length(); i++){
+    		        JSONObject jsonas = jsonRows.getJSONObject(i);
+    		        
+    		        Nouvelle nouvelle = new Nouvelle();
+    		        
+    		        nouvelle.setNouvelleId((jsonas.getLong("nouvelle_id")));
+    		        nouvelle.setNouvelleTexte(jsonas.getString("nouvelle_texte"));
+    		        nouvelle.setNouvelleDate(jsonas.getString("nouvelle_date"));
+    		        nouvelle.setNouvelleHeure(jsonas.getString("heure"));
+    		        nouvelle.setPays(jsonas.getString("pays"));
+    		        nouvelle.setVille(jsonas.getString("ville"));
+    		        nouvelle.setImageId(jsonas.getString("image_fichier"));
+    		        
+    		        listeNouvelles.add(nouvelle);
+
+    		    }
+    		   
+    			
+        	}
+        	catch(Exception e)
+    		{
+        		e.printStackTrace();
+    		    Toast.makeText(getApplicationContext(), "Impossible de charger la liste", Toast.LENGTH_SHORT).show();
+    		}
+
+        	return listeNouvelles;
+			
+        }
+        
+        @Override
+            protected void onPreExecute() {       
+                super.onPreExecute();
+                dialog= new ProgressDialog(MesNouvelles.this);
+                dialog.setMessage("Téléchargement des nouvelles...");
+                dialog.show();           
+            }
+
+        
+        @Override
+        protected void onPostExecute(List<Nouvelle> result) {
+        	
+        	super.onPostExecute(result);
+        	dialog.dismiss();
+        	adapter.addAll(result);
+			adapter.notifyDataSetChanged();
+        	
+        }
+    }
+
 }

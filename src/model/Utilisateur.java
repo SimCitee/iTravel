@@ -1,7 +1,7 @@
 package model;
 
 public class Utilisateur {
-	private int utilisateurId;
+	private Integer utilisateurId;
 	private String courriel;
 	private String nom;
 	private String prenom;
@@ -17,11 +17,11 @@ public class Utilisateur {
 		this.prenom = prenom;
 	}
 	
-	public int getUtilisateurId() {
+	public Integer getUtilisateurId() {
 		return utilisateurId;
 	}
 	
-	public void setUtilisateurId(int utilisateurId) {
+	public void setUtilisateurId(Integer utilisateurId) {
 		this.utilisateurId = utilisateurId;
 	}
 	

@@ -113,6 +113,17 @@ public class Nouvelle {
 	public void setUtilisateur(Utilisateur utilisateur) {
 		this.utilisateur = utilisateur;
 	}
+
+	@Override
+	public String toString() {
+		return "Nouvelle [nouvelleId=" + nouvelleId + ", nouvelleTexte="
+				+ nouvelleTexte + ", nouvelleDate=" + nouvelleDate
+				+ ", nouvelleHeure=" + nouvelleHeure + ", nouvelleDateMAJ="
+				+ nouvelleDateMAJ + ", nouvelleHeureMAJ=" + nouvelleHeureMAJ
+				+ ", latitude=" + latitude + ", longitude=" + longitude
+				+ ", pays=" + pays + ", ville=" + ville + ", imageId="
+				+ imageId + ", utilisateur=" + utilisateur + "]";
+	}
 	
 	
 	

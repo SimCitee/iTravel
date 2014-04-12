@@ -42,7 +42,8 @@
         </activity>
         <activity
             android:name="com.android.itravel.MesNouvelles"
-            android:label="@string/title_activity_my_news" >
+            android:label="@string/title_activity_my_news"
+            android:parentActivityName="com.android.itravel.ListeNouvelles" >
         </activity>
         <activity
             android:name="com.android.itravel.MesNouvellesModifier"

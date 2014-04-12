@@ -43,7 +43,7 @@ public class MesNouvellesModifier extends Activity {
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 			
 			itemListPosition = intent.getIntExtra("listPosition", 0);
-			String nouvelleId = intent.getStringExtra("nouvelle_id");
+			Long nouvelleId = intent.getLongExtra("nouvelle_id", 0);
 			String imageId = intent.getStringExtra("id_image");
 			String commentaire = intent.getStringExtra("commentaire");
 			Double positionPays = intent.getDoubleExtra("latitude", 0);
