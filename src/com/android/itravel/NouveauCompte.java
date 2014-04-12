@@ -3,6 +3,9 @@ package com.android.itravel;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Utilisateur;
+import model.UtilisateurActif;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -42,10 +45,11 @@ public class NouveauCompte extends Activity {
 	private Button btnCancel;
 	private ProgressDialog pDialog;
 	private ConnectionDetector cd;
-	private boolean savedAccount = false;
 	
 	//JSON node
 	private static final String TAG_SUCCES = "success";
+	private static final String TAG_ERREUR = "erreur";
+	private static final String TAG_UID = "utilisateur_id";
 
 	private void initViews() {
 		edtFirstname = (EditText)findViewById(R.id.edtNouveauCompteFirstname);
@@ -61,7 +65,8 @@ public class NouveauCompte extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_nouveau_compte);
-
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
 		initViews();
 		cd = new ConnectionDetector(getApplicationContext());
 		
@@ -154,22 +159,27 @@ public class NouveauCompte extends Activity {
 			password = Encryption.hashSHA256(password);
 			
 			// Send email and password	
-			params.add(new BasicNameValuePair("firstname", firstname));
-			params.add(new BasicNameValuePair("lastname", lastname));
-			params.add(new BasicNameValuePair("email", email));
-			params.add(new BasicNameValuePair("password", password));
-			
-			JSONObject json = DataAccessController.getDataFromUrl(DataURL.NOUVELLES_VOYAGEURS, "POST", params);
+			params.add(new BasicNameValuePair("prenom", firstname));
+			params.add(new BasicNameValuePair("nom", lastname));
+			params.add(new BasicNameValuePair("courriel", email));
+			params.add(new BasicNameValuePair("ljn_mot_passe", password));
 			
 			try {
+				JSONObject json = DataAccessController.getDataFromUrl(DataURL.AJOUT_UTILISATEUR, "GET", params);
+			
 				int success = json.getInt(TAG_SUCCES);	// valider le chargement
-				
+
 				// si succes chargement
 				if (success == 1) {
-					savedAccount = true;
+					int uid = json.getInt(TAG_UID);
+					
+					Utilisateur u = new Utilisateur(uid, email, lastname, firstname);
+					UtilisateurActif.getInstance().setUtilisateur(u);
 				} 
 				else {
-					Toast.makeText(getApplicationContext(), getResources().getString(R.string.alertErrorSavingAccount), Toast.LENGTH_SHORT).show();
+					UtilisateurActif.getInstance().setUtilisateur(null);
+					String error = json.getString(TAG_ERREUR);
+					Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
 				}
 			}
 			catch (JSONException e) {
@@ -184,11 +194,9 @@ public class NouveauCompte extends Activity {
 			pDialog.dismiss();
 			
 			//si authentifier, rediriger vers la liste des nouvelles
-			if (savedAccount) {
+			if (UtilisateurActif.getInstance().getUtilisateur() != null) {
 				Intent intent = new Intent(NouveauCompte.this, ListeNouvelles.class);
-				
 	    		startActivity(intent);
-				
 			}
 		}
 		

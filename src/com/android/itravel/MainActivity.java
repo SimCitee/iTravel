@@ -1,16 +1,21 @@
 package com.android.itravel;
 
 import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import model.Nouvelle;
+import model.Utilisateur;
+import model.UtilisateurActif;
 
 import com.android.itravel.NouveauCompte.EnregistrerUtilisateur;
 import com.android.itravel.constant.DataURL;
@@ -26,6 +31,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -44,10 +50,14 @@ public class MainActivity extends Activity {
 	private ListeNouvellesAdapteur adapteur;
 	private ProgressDialog pDialog;			// Progress dialog
 	private ConnectionDetector cd;
-	private boolean authenticated = false;
 	
 	//JSON node
 	private static final String TAG_SUCCES = "success";
+	private static final String TAG_USER = "user";
+	private static final String TAG_UID = "utilisateur_id";
+	private static final String TAG_EMAIL = "courriel";
+	private static final String TAG_PRENOM = "prenom";
+	private static final String TAG_NOM = "nom";
 	
 	private void initViews() {
 		edtEmail = (EditText)findViewById(R.id.edtMainEmail);
@@ -67,6 +77,10 @@ public class MainActivity extends Activity {
 		// Set listeners
 		btnLogin.setOnClickListener(onLoginClick);
 		btnNewAccount.setOnClickListener(onNewAccount);
+		
+		SimpleDateFormat localDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	String timestamp = localDateFormat.format( new Date());
+
 	}
 
 	@Override
@@ -81,15 +95,11 @@ public class MainActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			
-			Intent intent = new Intent(MainActivity.this, ListeNouvelles.class);
-			
-    		startActivity(intent);
-			
-			/*if (cd.isConnectingToInternet()) {
+			if (cd.isConnectingToInternet()) {
 				new AuthentifierUtilisateur().execute();
 			} else {
 				Toast.makeText(getApplicationContext(), getResources().getString(R.string.noInternetConnection), Toast.LENGTH_SHORT).show();
-			}*/
+			}
 		}
 	};
 	
@@ -131,25 +141,32 @@ public class MainActivity extends Activity {
 			// hash password
 			password = Encryption.hashSHA256(password);
 			
-			// Send email and password	
-			params.add(new BasicNameValuePair("email", email));
-			params.add(new BasicNameValuePair("password", password));
+			JSONObject json = DataAccessController.securePost(DataURL.GET_UTILISATEUR, "GET", params, email, password);
 			
-			JSONObject json = DataAccessController.getDataFromUrl(DataURL.NOUVELLES_VOYAGEURS, "POST", params);
-			
-			try {
-				int success = json.getInt(TAG_SUCCES);	// valider le chargement
-				
-				// si succes chargement
-				if (success == 1) {
-					authenticated = true;
-				} 
-				else {
-					Toast.makeText(getApplicationContext(), getResources().getString(R.string.alertFailedLogin), Toast.LENGTH_SHORT).show();
+			if (json != null) {
+				try {
+					int success = json.getInt(TAG_SUCCES);	// valider le chargement
+									
+					// si succes chargement
+					if (success == 1) {
+						
+						int uid = json.getInt(TAG_UID);
+						String courriel = json.getString(TAG_EMAIL);
+						String prenom = json.getString(TAG_PRENOM);
+						String nom = json.getString(TAG_NOM);
+							
+						Utilisateur u = new Utilisateur(uid, courriel, nom, prenom);
+						UtilisateurActif.getInstance().setUtilisateur(u);
+						
+					} 
+					else {
+						UtilisateurActif.getInstance().setUtilisateur(null);
+						Toast.makeText(getApplicationContext(), getResources().getString(R.string.alertFailedLogin), Toast.LENGTH_SHORT).show();
+					}
 				}
-			}
-			catch (JSONException e) {
-				e.printStackTrace();
+				catch (JSONException e) {
+					e.printStackTrace();
+				}
 			}
 			
 			return null;
@@ -160,11 +177,9 @@ public class MainActivity extends Activity {
 			pDialog.dismiss();
 			
 			//si authentifier, rediriger vers la liste des nouvelles
-			if (authenticated) {
+			if (UtilisateurActif.getInstance().getUtilisateur() != null) {
 				Intent intent = new Intent(MainActivity.this, ListeNouvelles.class);
-				
 	    		startActivity(intent);
-				
 			}
 		}
 		
