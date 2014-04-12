@@ -60,7 +60,9 @@ public class JSONParser {
                 // request method is GET
                 DefaultHttpClient httpClient = new DefaultHttpClient();
                 String paramString = URLEncodedUtils.format(params, "utf-8");
-                //url += "?" + paramString;
+                url += "?" + paramString;
+                
+                Log.d("url", url);
                 
                 HttpGet httpGet = new HttpGet(url);
  

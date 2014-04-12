@@ -7,5 +7,6 @@ package com.android.itravel.constant;
 public abstract class EnvironmentVariables {
 	
 	public static final String IMAGE_FOLDER = "/DCIM/Camera/iTravel";
+	public static final String HASH_TOKEN = "LesJoyeuxNaufrages";
 
 }

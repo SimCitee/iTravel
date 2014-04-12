@@ -51,7 +51,6 @@ public class MesNouvellesConsulter extends Activity {
 			 Bitmap myBitmap = BitmapFactory.decodeFile(imageCompleteName);
 			 i_image.setImageBitmap(myBitmap);
 		 }
-		 
 		
 		 e_comment.setText(commentaire);
 		 t_position.setText(longitude + ", " + latitude);
