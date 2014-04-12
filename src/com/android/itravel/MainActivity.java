@@ -77,9 +77,6 @@ public class MainActivity extends Activity {
 		// Set listeners
 		btnLogin.setOnClickListener(onLoginClick);
 		btnNewAccount.setOnClickListener(onNewAccount);
-		
-		SimpleDateFormat localDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    	String timestamp = localDateFormat.format( new Date());
 
 	}
 

@@ -96,9 +96,7 @@ public class MesNouvellesAjouter extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
 		return true;
-
 	}
 	
 	private View.OnClickListener onPictureTaken = new View.OnClickListener() {
@@ -252,7 +250,6 @@ public class MesNouvellesAjouter extends Activity {
 				//Affichage de la position si elle est trouvée
 				if(photoLatitude != null && photoLongitude != null)
 				{
-		
 					//Écrit la position dans le textview
 					t_position.setText(photoLatitude.toString() + ", " + photoLongitude.toString());
 				}
