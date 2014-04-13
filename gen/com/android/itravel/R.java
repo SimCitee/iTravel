@@ -121,6 +121,7 @@ public final class R {
         public static final int action_settings=0x7f050001;
         public static final int alertErrorSavingAccount=0x7f050025;
         public static final int alertFailedLogin=0x7f05001b;
+        public static final int alertLoadingNews=0x7f050028;
         public static final int alertMissingField=0x7f050026;
         public static final int alertPasswordsDiffer=0x7f050027;
         public static final int alertSavingAccount=0x7f050024;
@@ -141,6 +142,9 @@ public final class R {
         public static final int image_default=0x7f050002;
         public static final int mes_nouvelles_modifier_sauvegarder_btn=0x7f05000b;
         public static final int noInternetConnection=0x7f050009;
+        public static final int timeDayAgo=0x7f05002b;
+        public static final int timeHourAgo=0x7f050029;
+        public static final int timeMinuteAgo=0x7f05002a;
         public static final int title_activity_details_nouvelle=0x7f050005;
         public static final int title_activity_liste_nouvelles=0x7f050003;
         public static final int title_activity_mes_nouvelles_ajouter=0x7f05000c;

@@ -45,14 +45,19 @@ public class ListeNouvellesAdapteur extends ArrayAdapter<LinkedHashMap<String, N
 		if (n != null) {
 			TextView nomContact = (TextView) v.findViewById(R.id.txtListeNomContact);
 			TextView commentaire= (TextView) v.findViewById(R.id.txtListeCommentaire);
+			TextView minute     = (TextView) v.findViewById(R.id.txtListePostTime);
 			ImageView image		= (ImageView) v.findViewById(R.id.imvListeImage);
 			
+			if (minute != null) {
+				minute.setText(n.getAffichageTemps());
+			}
+			
 			if (nomContact != null) {
-				nomContact.setText(n.getPays());
+				nomContact.setText(n.getVoyageur());
 			}
 			
 			if (commentaire != null) {
-				commentaire.setText(n.getVille());
+				commentaire.setText(n.getNouvelleTexte());
 			}
 			
 			if (image != null) {

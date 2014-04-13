@@ -49,10 +49,11 @@ public class ListeNouvelles extends Activity {
 	
 	// JSON Node
 	private static final String TAG_SUCCES = "success";
-	private static final String TAG_NOUVELLES = "products";
-	private static final String TAG_PID = "pid";
-	private static final String TAG_CONTACT_NAME = "name";
+	private static final String TAG_NOUVELLES = "nouvelles";
+	private static final String TAG_PID = "id";
+	private static final String TAG_CONTACT_NAME = "voyageur";
 	private static final String TAG_COMMENT = "comment";
+	private static final String TAG_MINUTE = "minute";
 	
 	// JSONArray de nouvelles
 	JSONArray nouvelles = null;
@@ -71,9 +72,9 @@ public class ListeNouvelles extends Activity {
 		liste  = new ArrayList<LinkedHashMap<String, Nouvelle>>();
 		cd = new ConnectionDetector(getApplicationContext());
 		adapteur = new ListeNouvellesAdapteur(this, R.layout.list_post, liste);
-        dbHelper = new ITravelDbHelper(this);
+        /*dbHelper = new ITravelDbHelper(this);
         db = dbHelper.getWritableDatabase();
-        rdb = dbHelper.getReadableDatabase();
+        rdb = dbHelper.getReadableDatabase();*/
                    
         vListe.setAdapter(adapteur);
         vListe.setOnItemClickListener(onPostClick);
@@ -166,7 +167,7 @@ public class ListeNouvelles extends Activity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			pDialog = new ProgressDialog(ListeNouvelles.this);
-			//pDialog.setMessage(getResources().getString(R.string.loadingAllPosts));
+			pDialog.setMessage(getResources().getString(R.string.alertLoadingNews));
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(false);
 			pDialog.show();
@@ -193,8 +194,9 @@ public class ListeNouvelles extends Activity {
 						String id = node.getString(TAG_PID);
 						String name = node.getString(TAG_CONTACT_NAME);
 						String comment = node.getString(TAG_COMMENT);
+						int minute = node.getInt(TAG_MINUTE);
 												
-						Nouvelle n = new Nouvelle();
+						Nouvelle n = new Nouvelle(Long.parseLong(id), comment, name, minute);
 						
 						// Nouvelle Hashmap de nouvelles
 						LinkedHashMap<String, Nouvelle> map = new LinkedHashMap<String, Nouvelle>();

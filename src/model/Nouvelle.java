@@ -2,6 +2,8 @@ package model;
 
 import java.util.Date;
 
+import com.android.itravel.R;
+
 public class Nouvelle {
 	private Long nouvelleId;
 	private String nouvelleTexte;
@@ -15,8 +17,18 @@ public class Nouvelle {
 	private String ville;
 	private String imageId;
 	private Utilisateur utilisateur;
+	private String voyageur;
+	private int intervalleMinute;
+	
 	
 	public Nouvelle(){}
+	
+	public Nouvelle(Long id, String texte, String voyageur, int minute) {
+		this.nouvelleId = id;
+		this.nouvelleTexte = texte;
+		this.voyageur = voyageur;
+		this.intervalleMinute = minute;
+	}
 	
 	public Long getNouvelleId() {
 		return nouvelleId;
@@ -114,6 +126,36 @@ public class Nouvelle {
 		this.utilisateur = utilisateur;
 	}
 
+	public String getVoyageur() {
+		return voyageur;
+	}
+
+	public void setVoyageur(String voyageur) {
+		this.voyageur = voyageur;
+	}
+
+	public int getIntervalleMinute() {
+		return intervalleMinute;
+	}
+
+	public void setIntervalleMinute(int intervalleMinute) {
+		this.intervalleMinute = intervalleMinute;
+	}
+	
+	public String getAffichageTemps() {
+		// si une journee et plus
+		if (intervalleMinute >= 1440) {
+			int day = (intervalleMinute / 24) / 60;
+			return String.valueOf(day) + " jours";
+		} 
+		else if (intervalleMinute >= 60) {
+			int hour = intervalleMinute / 60;
+			return String.valueOf(hour) + " heures";
+		}
+		else
+			return String.valueOf(intervalleMinute) + " minutes";
+	} 
+
 	@Override
 	public String toString() {
 		return "Nouvelle [nouvelleId=" + nouvelleId + ", nouvelleTexte="
@@ -124,7 +166,5 @@ public class Nouvelle {
 				+ ", pays=" + pays + ", ville=" + ville + ", imageId="
 				+ imageId + ", utilisateur=" + utilisateur + "]";
 	}
-	
-	
 	
 }
