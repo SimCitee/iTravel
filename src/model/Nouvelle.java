@@ -9,8 +9,8 @@ public class Nouvelle {
 	private String nouvelleHeure;
 	private String nouvelleDateMAJ;		//Date dernière mise à jour
 	private String nouvelleHeureMAJ;	//Heure dernière mise à jour
-	private double latitude;
-	private double longitude;
+	private Double latitude;
+	private Double longitude;
 	private String pays;
 	private String ville;
 	private String imageId;
@@ -66,19 +66,19 @@ public class Nouvelle {
 		this.nouvelleHeureMAJ = nouvelleHeureMAJ;
 	}
 	
-	public double getLatitude() {
+	public Double getLatitude() {
 		return latitude;
 	}
 	
-	public void setLatitude(double latitude) {
+	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
 	}
 	
-	public double getLongitude() {
+	public Double getLongitude() {
 		return longitude;
 	}
 	
-	public void setLongitude(double longitude) {
+	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
 	

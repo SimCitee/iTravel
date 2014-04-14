@@ -2,17 +2,25 @@ package com.android.itravel;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.InputStreamEntity;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ContentBody;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -74,17 +82,6 @@ public class MesNouvelles extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mes_nouvelles);
-
-		//Set l'utilisateur actif
-		Utilisateur u = new Utilisateur();
-		u.setUtilisateurId(1000);
-		u.setCourriel("pl@gmail.com");
-		u.setNom("Handfield");
-		u.setPrenom("Pierre-Luc");
-		UtilisateurActif.getInstance().setUtilisateur(u);
-
-
-		
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 /*
@@ -405,11 +402,128 @@ public class MesNouvelles extends Activity {
     /*
      * Ajout d'une nouvelle dans la base de données (asynchrone)
      */
+    @SuppressWarnings("deprecation")
     private class AjouterDonneeNouvelleThread extends AsyncTask<ArrayList<Object>, Void, String> {
 
         @Override
-        protected String doInBackground(ArrayList<Object>... params) {
-  
+        protected String doInBackground(ArrayList<Object>... args) {
+        	
+        	//La nouvelle à ajouter
+        	Nouvelle nouvelle = (Nouvelle) args[0].get(0);
+        	
+        	//Ajoute les information
+        	try {
+        		//Url of the server
+                String url = DataURL.AJOUTER_NOUVELLE;
+                HttpClient client = new DefaultHttpClient();
+                HttpPost post = new HttpPost(url);
+                
+    			MultipartEntity mpEntity = new MultipartEntity();
+                //Path of the file to be uploaded
+                String filepath = Environment.getExternalStorageDirectory() + EnvironmentVariables.IMAGE_FOLDER + "/" + nouvelle.getImageId();
+    			//String filepath = Environment.getExternalStorageDirectory() + EnvironmentVariables.IMAGE_FOLDER + "/" + "test.jpg";
+                Log.i("", "Image path : " + filepath);
+                File file = new File(filepath);
+                
+               if(file.exists())
+               {
+                Log.i("", "Image trouve");
+               }
+               else
+               {
+               Log.i("", "Image non trouve");
+               }
+                
+                
+                
+                ContentBody cbFile = new FileBody(file, "image/jpeg");
+
+                //Add the data to the multipart entity
+                mpEntity.addPart("image", cbFile);
+                //mpEntity.addPart("nouvelle_id", new StringBody(nouvelle.getNouvelleId().toString(), Charset.forName("UTF-8")));
+                
+    			mpEntity.addPart("nouvelle_texte", new StringBody(nouvelle.getNouvelleTexte(), Charset.forName("UTF-8")));
+                mpEntity.addPart("latitude", new StringBody( nouvelle.getLatitude().toString(), Charset.forName("UTF-8")));
+                mpEntity.addPart("longitude", new StringBody(nouvelle.getLongitude().toString(), Charset.forName("UTF-8")));
+                
+                String pays = nouvelle.getPays();
+                if(pays == null)
+                	pays = "";
+                
+                
+                mpEntity.addPart("pays", new StringBody(pays, Charset.forName("UTF-8")));
+                
+                String ville = nouvelle.getVille();
+                if(ville == null)
+                	ville = "";
+                
+                mpEntity.addPart("ville", new StringBody(ville, Charset.forName("UTF-8")));
+                mpEntity.addPart("utilisateur_id", new StringBody(UtilisateurActif.getInstance().getUtilisateur().getUtilisateurId().toString(), Charset.forName("UTF-8")));
+               
+    			
+                //mpEntity.addPart("nouvelle_texte", new StringBody("aaa", Charset.forName("UTF-8")));
+                //mpEntity.addPart("latitude", new StringBody( "200" , Charset.forName("UTF-8")));
+                //mpEntity.addPart("longitude", new StringBody("220", Charset.forName("UTF-8")));
+                //mpEntity.addPart("pays", new StringBody("pays", Charset.forName("UTF-8")));
+                //mpEntity.addPart("ville", new StringBody("ville", Charset.forName("UTF-8")));
+                //mpEntity.addPart("utilisateur_id", new StringBody("14", Charset.forName("UTF-8")));
+               
+                
+                post.setEntity(mpEntity);
+                //Execute the post request
+                HttpResponse response1 = client.execute(post);
+                //Get the response from the server
+                HttpEntity resEntity = response1.getEntity();
+                String Response=EntityUtils.toString(resEntity);
+                Log.i("Response:", "Répnse du serveur : " + Response);
+                //Generate the array from the response
+                JSONArray jsonarray = new JSONArray("["+Response+"]");
+                JSONObject jsonobject = jsonarray.getJSONObject(0);
+                //Get the result variables from response 
+                //String result = (jsonobject.getString("result"));
+                //String msg = (jsonobject.getString("msg"));
+                //Close the connection
+                client.getConnectionManager().shutdown();
+                
+        		/*
+        		//Url of the server
+                String url = DataURL.AJOUTER_NOUVELLE;
+                HttpClient client = new DefaultHttpClient();
+                HttpPost post = new HttpPost(url);
+               
+    			MultipartEntity mpEntity = new MultipartEntity();
+                //Path of the file to be uploaded
+                String filepath = Environment.getExternalStorageDirectory() + EnvironmentVariables.IMAGE_FOLDER + "/201403251541330.jpg";
+                File file = new File(filepath);
+                ContentBody cbFile = new FileBody(file, "image/jpeg");         
+
+                //Add the data to the multipart entity
+                mpEntity.addPart("image", cbFile);
+                mpEntity.addPart("name", new StringBody("Test", Charset.forName("UTF-8")));
+                mpEntity.addPart("data", new StringBody("This is test report", Charset.forName("UTF-8")));
+                post.setEntity(mpEntity);
+                //Execute the post request
+                HttpResponse response1 = client.execute(post);
+                //Get the response from the server
+                HttpEntity resEntity = response1.getEntity();
+                String Response=EntityUtils.toString(resEntity);
+                Log.d("Response:", Response);
+                //Generate the array from the response
+                JSONArray jsonarray = new JSONArray("["+Response+"]");
+                JSONObject jsonobject = jsonarray.getJSONObject(0);
+                //Get the result variables from response 
+                String result = (jsonobject.getString("result"));
+                String msg = (jsonobject.getString("msg"));
+                //Close the connection
+                client.getConnectionManager().shutdown();
+                
+                */
+                
+			} catch (Exception e) {
+				Log.i("", "Message d'erreur : " +  e.getMessage());
+				return getResources().getString(com.android.itravel.R.string.element_not_added);
+			}
+       /* 	
         	Nouvelle nouvelle = (Nouvelle) params[0].get(0);
         	Context mesNouvelles = (Context) params[0].get(1);
         	
@@ -434,7 +548,7 @@ public class MesNouvelles extends Activity {
     		 
     		// Insert the new row, returning the primary key value of the new row 
     		long newRowId = dbWrite.insert(EntreeNouvelle.TABLE, null, values);
-         		
+*/
     		return getResources().getString(com.android.itravel.R.string.element_added);
         }
 /*
@@ -537,7 +651,41 @@ public class MesNouvelles extends Activity {
         protected void onPostExecute(String result) {
         	Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
         }
+ /*       
+        @SuppressWarnings("deprecation")
+        private void upload() throws Exception {
+            //Url of the server
+            String url = DataURL.AJOUTER_NOUVELLE;
+            HttpClient client = new DefaultHttpClient();
+            HttpPost post = new HttpPost(url);
+           
+			MultipartEntity mpEntity = new MultipartEntity();
+            //Path of the file to be uploaded
+            String filepath = Environment.getExternalStorageDirectory() + EnvironmentVariables.IMAGE_FOLDER + "/201403251541330.jpg";
+            File file = new File(filepath);
+            ContentBody cbFile = new FileBody(file, "image/jpeg");         
 
+            //Add the data to the multipart entity
+            mpEntity.addPart("image", cbFile);
+            mpEntity.addPart("name", new StringBody("Test", Charset.forName("UTF-8")));
+            mpEntity.addPart("data", new StringBody("This is test report", Charset.forName("UTF-8")));
+            post.setEntity(mpEntity);
+            //Execute the post request
+            HttpResponse response1 = client.execute(post);
+            //Get the response from the server
+            HttpEntity resEntity = response1.getEntity();
+            String Response=EntityUtils.toString(resEntity);
+            Log.d("Response:", Response);
+            //Generate the array from the response
+            JSONArray jsonarray = new JSONArray("["+Response+"]");
+            JSONObject jsonobject = jsonarray.getJSONObject(0);
+            //Get the result variables from response 
+            String result = (jsonobject.getString("result"));
+            String msg = (jsonobject.getString("msg"));
+            //Close the connection
+            client.getConnectionManager().shutdown();
+        }
+ */       
     }
     
     
@@ -646,6 +794,7 @@ public class MesNouvelles extends Activity {
         	//Integer userId = 2; //UtilisateurActif.getInstance().getUtilisateur().getUtilisateurId();
         	Integer userId = UtilisateurActif.getInstance().getUtilisateur().getUtilisateurId();
         	
+        	Log.i("", "Utilisateur : " + UtilisateurActif.getInstance().getUtilisateur().toString());
         	
         	//Identifiant de l'utilisateur actuel
     		params.add(new BasicNameValuePair("utilisateur_id", userId.toString()));
@@ -654,32 +803,36 @@ public class MesNouvelles extends Activity {
     		try {	
     			//Cherche le json sur le serveur
     			jsonServer = DataAccessController.getDataFromUrl(DataURL.CONSULTER_MES_NOUVELLES, "POST", params);
-    			//Tableau d'objets
-    		    JSONArray jsonRows= jsonServer.getJSONArray("data");   
-    		    
-    		    for(int i=0;i<jsonRows.length(); i++){
-    		        JSONObject jsonas = jsonRows.getJSONObject(i);
-    		        
-    		        Nouvelle nouvelle = new Nouvelle();
-    		        
-    		        nouvelle.setNouvelleId((jsonas.getLong("nouvelle_id")));
-    		        nouvelle.setNouvelleTexte(jsonas.getString("nouvelle_texte"));
-    		        nouvelle.setNouvelleDate(jsonas.getString("nouvelle_date"));
-    		        nouvelle.setNouvelleHeure(jsonas.getString("heure"));
-    		        nouvelle.setPays(jsonas.getString("pays"));
-    		        nouvelle.setVille(jsonas.getString("ville"));
-    		        nouvelle.setImageId(jsonas.getString("image_fichier"));
-    		        
-    		        listeNouvelles.add(nouvelle);
-
-    		    }
+    			
+    			if(jsonServer.length() > 0){
+	    			//Tableau d'objets
+	    		    JSONArray jsonRows= jsonServer.getJSONArray("data");   
+	    		    
+	    		    for(int i=0;i<jsonRows.length(); i++){
+	    		        JSONObject jsonas = jsonRows.getJSONObject(i);
+	    		        
+	    		        Nouvelle nouvelle = new Nouvelle();
+	    		        
+	    		        nouvelle.setNouvelleId((jsonas.getLong("nouvelle_id")));
+	    		        nouvelle.setNouvelleTexte(jsonas.getString("nouvelle_texte"));
+	    		        nouvelle.setNouvelleDate(jsonas.getString("nouvelle_date"));
+	    		        nouvelle.setNouvelleHeure(jsonas.getString("heure"));
+	    		        nouvelle.setPays(jsonas.getString("pays"));
+	    		        nouvelle.setVille(jsonas.getString("ville"));
+	    		        nouvelle.setImageId(jsonas.getString("image_fichier"));
+	    		        
+	    		        listeNouvelles.add(nouvelle);
+	
+	    		    }
+    			}
+    			
     		   
     			
         	}
         	catch(Exception e)
     		{
         		e.printStackTrace();
-    		    Toast.makeText(getApplicationContext(), "Impossible de charger la liste", Toast.LENGTH_SHORT).show();
+    		   
     		}
 
         	return listeNouvelles;

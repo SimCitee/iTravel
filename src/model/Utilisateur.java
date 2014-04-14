@@ -48,6 +48,12 @@ public class Utilisateur {
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
 	}
+
+	@Override
+	public String toString() {
+		return "Utilisateur [utilisateurId=" + utilisateurId + ", courriel="
+				+ courriel + ", nom=" + nom + ", prenom=" + prenom + "]";
+	}
 	
 	
 }
