@@ -42,5 +42,9 @@
     <string name="alertErrorSavingAccount">Il y a eu problème avec l\'enregistrement, veuillez essayer à nouveau.</string>
     <string name="alertMissingField">Veuillez remplir tout les champs.</string>
     <string name="alertPasswordsDiffer">Les mots de passes ne sont pas identique.</string>
+    <string name="alertLoadingNews">Chargement des nouvelles.</string>
+    <string name="timeHourAgo">heures</string>
+    <string name="timeMinuteAgo">minutes</string>
+    <string name="timeDayAgo">jours</string>
 
 </resources>

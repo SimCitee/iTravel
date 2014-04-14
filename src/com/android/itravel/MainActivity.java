@@ -72,23 +72,11 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		
 		initViews();
-		//cd = new ConnectionDetector(getApplicationContext());
+		cd = new ConnectionDetector(getApplicationContext());
 		
 		// Set listeners
-		//btnLogin.setOnClickListener(onLoginClick);
-		//btnNewAccount.setOnClickListener(onNewAccount);
-		
-		
-		////////////////////////////////////
-		//BYPASS DU LOGIN (PLH)
-		//NB DÉCOMMENTER les listeners plus haut
-		Utilisateur u = new Utilisateur(14, "s@gmail.com", "Handf", "Pierre");
-		UtilisateurActif.getInstance().setUtilisateur(u);
-		Intent intent = new Intent(MainActivity.this, MesNouvelles.class);
-		startActivity(intent);
-		
-		
-		////////////////////////////////////
+		btnLogin.setOnClickListener(onLoginClick);
+		btnNewAccount.setOnClickListener(onNewAccount);
 	}
 
 	@Override
