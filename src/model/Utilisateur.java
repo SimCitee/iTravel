@@ -49,6 +49,10 @@ public class Utilisateur {
 		this.prenom = prenom;
 	}
 
+	public String getFullName() {
+		return this.prenom + " " + this.nom;
+	}
+	
 	@Override
 	public String toString() {
 		return "Utilisateur [utilisateurId=" + utilisateurId + ", courriel="

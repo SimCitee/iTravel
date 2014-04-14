@@ -21,6 +21,7 @@ import com.android.itravel.util.DataAccessController;
 import com.android.itravel.util.JSONParser;
 
 import model.Nouvelle;
+import model.Utilisateur;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
@@ -51,9 +52,15 @@ public class ListeNouvelles extends Activity {
 	private static final String TAG_SUCCES = "success";
 	private static final String TAG_NOUVELLES = "nouvelles";
 	private static final String TAG_PID = "id";
-	private static final String TAG_CONTACT_NAME = "voyageur";
 	private static final String TAG_COMMENT = "comment";
-	private static final String TAG_MINUTE = "minute";
+	private static final String TAG_IMAGE = "image";
+	private static final String TAG_DATE = "date";
+	private static final String TAG_HEURE = "heure";
+	private static final String TAG_INTERVALLE = "minute";
+	private static final String TAG_NOM = "nom";
+	private static final String TAG_PRENOM = "prenom";
+	private static final String TAG_UID = "uid";
+	private static final String TAG_COURRIEL = "courriel";
 	
 	// JSONArray de nouvelles
 	JSONArray nouvelles = null;
@@ -149,8 +156,13 @@ public class ListeNouvelles extends Activity {
 			
 			Intent intent = new Intent(ListeNouvelles.this, DetailsNouvelle.class);
 			
-			intent.putExtra("nomContact", n.getPays());
-			intent.putExtra("commentaire", n.getVille());
+			intent.putExtra("prenom", n.getUtilisateur().getPrenom());
+			intent.putExtra("nom", n.getUtilisateur().getNom());
+			intent.putExtra("commentaire", n.getNouvelleTexte());
+			intent.putExtra("date", n.getNouvelleDate());
+			intent.putExtra("heure", n.getNouvelleHeure());
+			intent.putExtra("image", n.getImageId());
+			
 			
     		startActivity(intent);
 			
@@ -192,11 +204,19 @@ public class ListeNouvelles extends Activity {
 						JSONObject node = nouvelles.getJSONObject(i);
 						
 						String id = node.getString(TAG_PID);
-						String name = node.getString(TAG_CONTACT_NAME);
 						String comment = node.getString(TAG_COMMENT);
-						int minute = node.getInt(TAG_MINUTE);
-												
-						Nouvelle n = new Nouvelle(Long.parseLong(id), comment, name, minute);
+						String image = node.getString(TAG_IMAGE);
+						String dt = node.getString(TAG_DATE);
+						String hr = node.getString(TAG_HEURE);
+						int minute = node.getInt(TAG_INTERVALLE);
+						
+						int uid = node.getInt(TAG_UID);
+						String nom = node.getString(TAG_PRENOM);
+						String prenom = node.getString(TAG_NOM);
+						String courriel = node.getString(TAG_COURRIEL);
+								
+						Utilisateur u = new Utilisateur(uid, courriel, nom, prenom);
+						Nouvelle n = new Nouvelle(Long.parseLong(id), comment, image, u, minute);
 						
 						// Nouvelle Hashmap de nouvelles
 						LinkedHashMap<String, Nouvelle> map = new LinkedHashMap<String, Nouvelle>();
@@ -241,10 +261,6 @@ public class ListeNouvelles extends Activity {
 
 	public static String getTagPid() {
 		return TAG_PID;
-	}
-
-	public static String getTagContactName() {
-		return TAG_CONTACT_NAME;
 	}
 
 	public static String getTagComment() {

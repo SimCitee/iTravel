@@ -20,11 +20,12 @@ public class Nouvelle {
 	
 	public Nouvelle(){}
 	
-	public Nouvelle(Long id, String texte, String voyageur, int minute) {
+	public Nouvelle(Long id, String texte, String image, Utilisateur u, int minute) {
 		this.nouvelleId = id;
 		this.nouvelleTexte = texte;
-		this.voyageur = voyageur;
+		this.utilisateur = u;
 		this.intervalleMinute = minute;
+		this.imageId = image;
 	}
 	
 	public Long getNouvelleId() {

@@ -3,6 +3,9 @@ package com.android.itravel.listadaptor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
 
 import model.Nouvelle;
 
@@ -10,7 +13,13 @@ import com.android.itravel.ListeNouvelles;
 import com.android.itravel.R;
 import com.android.itravel.R.id;
 import com.android.itravel.R.layout;
+import com.android.itravel.constant.DataURL;
+import com.android.itravel.util.DataAccessController;
+import com.android.itravel.util.ImageLoader;
+
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,12 +57,13 @@ public class ListeNouvellesAdapteur extends ArrayAdapter<LinkedHashMap<String, N
 			TextView minute     = (TextView) v.findViewById(R.id.txtListePostTime);
 			ImageView image		= (ImageView) v.findViewById(R.id.imvListeImage);
 			
+			
 			if (minute != null) {
 				minute.setText(n.getAffichageTemps());
 			}
 			
 			if (nomContact != null) {
-				nomContact.setText(n.getVoyageur());
+				nomContact.setText(n.getUtilisateur().getFullName());
 			}
 			
 			if (commentaire != null) {
@@ -61,11 +71,19 @@ public class ListeNouvellesAdapteur extends ArrayAdapter<LinkedHashMap<String, N
 			}
 			
 			if (image != null) {
-				//image.setImageResource(n.getImageId());
+				// si la nouvelle contient une image
+				if (!n.getImageId().isEmpty() && !n.getImageId().equalsIgnoreCase("")) {
+					ImageLoader imgLoader = new ImageLoader(parent.getContext());
+					
+					Log.d("image url", DataURL.SERVER_URL+n.getImageId());
+					
+					imgLoader.DisplayImage(DataURL.SERVER_URL+n.getImageId(), image);
+				}
 			}
 		
 		}
 		
 		return v;
 	}
+	
 }

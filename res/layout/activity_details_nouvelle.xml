@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/main_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DetailsNouvelle" >
@@ -17,6 +18,7 @@
 
             <TextView
                 android:id="@+id/txtDetailNomContact"
+                style="@style/medium_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
@@ -24,14 +26,14 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="141dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp" >
 
                 <ImageView
                     android:id="@+id/imvDetailImage"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:adjustViewBounds="true"
@@ -39,6 +41,12 @@
                     android:src="@drawable/thumbnail_default" />
 
             </RelativeLayout>
+
+            <TextView
+                android:id="@+id/txtDetailDateHeure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
 
             <TextView
                 android:id="@+id/txtDetailCommentaire"
@@ -77,10 +85,17 @@
 
 	        </RelativeLayout>
 
+            <TextView
+                android:id="@+id/txtDetailLeaveComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/txtMyNewsCommentary" />
+
             <EditText
                 android:id="@+id/edtDetailAjoutCommentaire"
                 android:layout_width="match_parent"
                 android:layout_height="88dp"
+                android:background="#bde4ff"
                 android:ems="10"
                 android:inputType="textMultiLine" >
 
@@ -88,6 +103,7 @@
 
             <Button
                 android:id="@+id/btnDetailAjoutCommentaire"
+                style="@style/button_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/btnDetailAddComment" />
