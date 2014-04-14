@@ -65,6 +65,10 @@
             android:name="com.android.itravel.NouveauCompte"
             android:label="@string/title_activity_nouveau_compte" >
         </activity>
+        <activity
+            android:name="com.android.itravel.ListeVoyageurs"
+            android:label="@string/title_activity_liste_voyageurs" >
+        </activity>
     </application>
 
 </manifest>
