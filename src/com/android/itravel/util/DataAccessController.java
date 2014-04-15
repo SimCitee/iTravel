@@ -35,6 +35,9 @@ public class DataAccessController {
 	
 	public static Bitmap getBitmapFromURL(String imageUrl) {
 		try {
+			
+			Log.d("image url", imageUrl);
+			
 			URL url = new URL(imageUrl);
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setDoInput(true);

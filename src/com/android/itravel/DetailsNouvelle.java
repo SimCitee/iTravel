@@ -22,6 +22,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,20 +56,24 @@ public class DetailsNouvelle extends Activity {
 		
 		boolean isInternetActive = cd.isConnectingToInternet();
 		
-		if (isInternetActive) {
-			new LoadImage().execute();
-		} 
-		else {
-			Toast.makeText(getApplicationContext(), getResources().getString(R.string.noInternetConnection), Toast.LENGTH_SHORT).show();
-		}
-		
 		Intent intent = getIntent();
 		
-		String nom = intent.getStringExtra("nomContact");
+		String prenom = intent.getStringExtra("prenom");
+		String nom = intent.getStringExtra("nom");
 		String desc = intent.getStringExtra("commentaire");
+		String date = intent.getStringExtra("date");
+		String heure = intent.getStringExtra("heure");
+		String image = intent.getStringExtra("image");
 		
-		txtNomContact.setText(nom);
+		Log.d("detail image", image);
+		
+		txtNomContact.setText(prenom+" "+nom);
 		txtCommentaire.setText(desc);
+		
+		// si internet et nouvelle contient image
+		if (isInternetActive && !image.equalsIgnoreCase("")) {
+			new LoadImage().execute(image);
+		} 
 	}
 
 	@Override
@@ -91,12 +96,10 @@ public class DetailsNouvelle extends Activity {
 		
 		@Override
 		protected String doInBackground(String... args) {
-						
-			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			
+			String imageStr = args[0];
 
 			try {
-				image = DataAccessController.getBitmapFromURL("http://simond.byethost7.com/download.jpg");	
+				image = DataAccessController.getBitmapFromURL(DataURL.SERVER_URL+imageStr);	
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -119,31 +122,5 @@ public class DetailsNouvelle extends Activity {
 		}
 		
 	}
-	
-	/*
-	 * 
-	 * public class ResizableImageView extends ImageView {
-
-    public ResizableImageView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    @Override 
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec){
-         Drawable d = getDrawable();
-
-         if(d!=null){
-                 // ceil not round - avoid thin vertical gaps along the left/right edges
-                 int width = MeasureSpec.getSize(widthMeasureSpec);
-                 int height = (int) Math.ceil((float) width * (float) d.getIntrinsicHeight() / (float) d.getIntrinsicWidth());
-                 setMeasuredDimension(width, height);
-         }else{
-                 super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-         }
-    }
-
-}
-	 */
-
 
 }
