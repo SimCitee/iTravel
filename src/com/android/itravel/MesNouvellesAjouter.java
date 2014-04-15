@@ -4,6 +4,7 @@ import com.android.itravel.R;
 import com.android.itravel.constant.EnvironmentVariables;
 import com.android.itravel.util.BitmapRotator;
 import com.android.itravel.util.ExifPositionUtil;
+import com.android.itravel.util.LocationHelper;
 
 import android.location.Criteria;
 import android.location.Location;
@@ -37,6 +38,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Random;
+
+import model.UtilisateurActif;
 
 
 import android.graphics.BitmapFactory;
@@ -61,6 +66,9 @@ public class MesNouvellesAjouter extends Activity {
 	private Double gpsLongitude = null;
 	private LocationManager locationManager;
 	private String provider;
+	private String ville = null;
+	private String pays = null;
+	private String imageId;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -122,11 +130,20 @@ public class MesNouvellesAjouter extends Activity {
 			//Formatage pour donner un identifiant à l'image
 			//NB : quand le serveur sera implanté, ce sera lui qui définira l'identifiant de l'image
 			//Champ incrémental de la base de données
+			
+			Integer userId = UtilisateurActif.getInstance().getUtilisateur().getUtilisateurId();
+			
 			String strTimestamp = photoTimestamp.toString();
 			strTimestamp = strTimestamp.replaceAll("[\\s\\-.:]", "");
 			
+            Random r = new Random();
+            int randId = r.nextInt(9999 - 1000) + 1000;
+            
+            //Identifiant unique de l'image
+            imageId = userId + strTimestamp + randId;
+			
 			//Nommage du fichier d'image
-			photoFile = new File(path, strTimestamp + ".jpg");
+			photoFile = new File(path, imageId + ".jpg");
 			
 			//Crée le fichier d'image (vide) sur le disque 
 			try {
@@ -171,7 +188,7 @@ public class MesNouvellesAjouter extends Activity {
 			else
 			{
 				
-				intent.putExtra("id_image", (String) photoFile.getName());
+				intent.putExtra("id_image", imageId + ".jpg");
 				
 			}
 			
@@ -194,13 +211,27 @@ public class MesNouvellesAjouter extends Activity {
 				
 				intent.putExtra("latitude", gpsLatitude);
 				intent.putExtra("longitude", gpsLongitude);
+				
+				//Cherche les le pays et la ville
+				HashMap<String, String> loc= LocationHelper.getAddress(MesNouvellesAjouter.this, gpsLatitude, gpsLongitude);
+				ville = loc.get("ville");
+				intent.putExtra("ville", ville);
+				
+				pays = loc.get("pays");
+				intent.putExtra("pays", pays);
+				
 			}
 			else
 			{
 				//Coordonnée prise sur la photo
 				intent.putExtra("latitude", photoLatitude);
 				intent.putExtra("longitude", photoLongitude);
+
+				intent.putExtra("ville", ville);
+				intent.putExtra("pays", pays);
 			}
+			
+			
 			
 			
 			intent.putExtra("date",  String.valueOf(calendar.get(Calendar.DATE)));
@@ -218,14 +249,11 @@ public class MesNouvellesAjouter extends Activity {
 		 if (requestCode == CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_OK)
 		 {
 
-			 ////////////////////////////////////////////////////////////
 			 BitmapRotator photoRotator = new BitmapRotator(photoFile.getAbsolutePath());
 			 photoRotator.doRotationIfNeeded();
 			 Bitmap myBitmap = photoRotator.getBitmap();
 			 photoRotator.save();
 	          
-			 ///////////////////////////////////////////////////////////
-			 
 			 i_image.setImageBitmap(myBitmap);
 			 
 			 
@@ -250,8 +278,13 @@ public class MesNouvellesAjouter extends Activity {
 				//Affichage de la position si elle est trouvée
 				if(photoLatitude != null && photoLongitude != null)
 				{
+					//Cherche les le pays et la ville
+					HashMap<String, String> loc= LocationHelper.getAddress(MesNouvellesAjouter.this, photoLatitude, photoLongitude);
+					ville = loc.get("ville");
+					pays = loc.get("pays");
+					
 					//Écrit la position dans le textview
-					t_position.setText(photoLatitude.toString() + ", " + photoLongitude.toString());
+					t_position.setText(ville + ", " + pays);
 				}
 				
 			} catch (IOException e) {

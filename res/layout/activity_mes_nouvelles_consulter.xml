@@ -30,13 +30,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/txtConsulterMesNouvellesCommentaire"
-                style="@style/medium_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/txtMyNewsCommentary" />
-
                 <TextView
                     android:id="@+id/mes_nouvelles_consulter_commentaire_textview"
                     style="@style/medium_label"

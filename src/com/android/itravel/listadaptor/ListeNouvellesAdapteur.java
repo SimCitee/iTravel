@@ -15,7 +15,7 @@ import com.android.itravel.R.id;
 import com.android.itravel.R.layout;
 import com.android.itravel.constant.DataURL;
 import com.android.itravel.util.DataAccessController;
-import com.android.itravel.util.ImageLoader;
+//import com.android.itravel.util.ImageLoader;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -73,11 +73,11 @@ public class ListeNouvellesAdapteur extends ArrayAdapter<LinkedHashMap<String, N
 			if (image != null) {
 				// si la nouvelle contient une image
 				if (!n.getImageId().isEmpty() && !n.getImageId().equalsIgnoreCase("")) {
-					ImageLoader imgLoader = new ImageLoader(parent.getContext());
+					//ImageLoader imgLoader = new ImageLoader(parent.getContext());
 					
 					Log.d("image url", DataURL.SERVER_URL+n.getImageId());
 					
-					imgLoader.DisplayImage(DataURL.SERVER_URL+n.getImageId(), image);
+					//imgLoader.DisplayImage(DataURL.SERVER_URL+n.getImageId(), image);
 				}
 			}
 		

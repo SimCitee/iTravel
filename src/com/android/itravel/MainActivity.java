@@ -77,6 +77,7 @@ public class MainActivity extends Activity {
 		// Set listeners
 		btnLogin.setOnClickListener(onLoginClick);
 		btnNewAccount.setOnClickListener(onNewAccount);
+		
 	}
 
 	@Override

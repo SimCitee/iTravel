@@ -34,8 +34,8 @@ public class MesNouvellesConsulter extends Activity {
 		
 		String imageId = intent.getStringExtra("image_id");
 		String commentaire = intent.getStringExtra("commentaire");
-		Double longitude = intent.getDoubleExtra("longitude", 0);
-		Double latitude = intent.getDoubleExtra("latitude", 0);
+		String ville = intent.getStringExtra("ville");
+		String pays = intent.getStringExtra("pays");
 		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
@@ -53,7 +53,7 @@ public class MesNouvellesConsulter extends Activity {
 		 }
 		
 		 e_comment.setText(commentaire);
-		 t_position.setText(longitude + ", " + latitude);
+		 t_position.setText(ville + ", " + pays);
 	}
 
 	@Override

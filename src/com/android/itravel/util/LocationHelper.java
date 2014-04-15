@@ -15,6 +15,7 @@ import android.location.Geocoder;
 import android.location.LocationManager;
 import android.location.Location;
 import android.location.LocationListener;
+import android.util.Log;
 
 public class LocationHelper {
 	
@@ -34,6 +35,7 @@ public class LocationHelper {
 	            	HashMap<String,String> data = new HashMap<String,String>();
 	            	
 	                for(int i = 0; i < addresses.size(); i++){
+	                	
 	                	data.put("ville", addresses.get(i).getLocality());
 	                	data.put("pays", addresses.get(i).getCountryName());
 	                }

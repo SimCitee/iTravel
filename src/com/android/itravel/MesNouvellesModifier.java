@@ -46,8 +46,8 @@ public class MesNouvellesModifier extends Activity {
 			Long nouvelleId = intent.getLongExtra("nouvelle_id", 0);
 			String imageId = intent.getStringExtra("id_image");
 			String commentaire = intent.getStringExtra("commentaire");
-			Double positionPays = intent.getDoubleExtra("latitude", 0);
-			Double positionVille = intent.getDoubleExtra("longitude", 0);
+			String pays = intent.getStringExtra("ville");
+			String ville = intent.getStringExtra("pays");
 			
 			//Image avec le path
 			 String imageCompleteName = Environment.getExternalStorageDirectory() + EnvironmentVariables.IMAGE_FOLDER + "/" + imageId; 
@@ -63,7 +63,7 @@ public class MesNouvellesModifier extends Activity {
 			 }
 			
 			 e_comment.setText(commentaire);
-			 t_position.setText(positionPays + ", " + positionVille);
+			 t_position.setText(ville + ", " + pays);
 			
 			 save = (Button)findViewById(R.id.mes_nouvelles_modifier_sauvegarder_button);
 			 save.setOnClickListener(onSave);
