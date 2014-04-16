@@ -57,6 +57,9 @@ public class ListeNouvelles extends Activity {
 	private static final String TAG_DATE = "date";
 	private static final String TAG_HEURE = "heure";
 	private static final String TAG_INTERVALLE = "minute";
+	private static final String TAG_VILLE = "ville";
+	private static final String TAG_PAYS = "pays";
+	
 	private static final String TAG_NOM = "nom";
 	private static final String TAG_PRENOM = "prenom";
 	private static final String TAG_UID = "uid";
@@ -156,13 +159,15 @@ public class ListeNouvelles extends Activity {
 			
 			Intent intent = new Intent(ListeNouvelles.this, DetailsNouvelle.class);
 			
+			intent.putExtra("nid", n.getNouvelleId());
 			intent.putExtra("prenom", n.getUtilisateur().getPrenom());
 			intent.putExtra("nom", n.getUtilisateur().getNom());
 			intent.putExtra("commentaire", n.getNouvelleTexte());
 			intent.putExtra("date", n.getNouvelleDate());
 			intent.putExtra("heure", n.getNouvelleHeure());
 			intent.putExtra("image", n.getImageId());
-			
+			intent.putExtra("ville", n.getVille());
+			intent.putExtra("pays", n.getPays());
 			
     		startActivity(intent);
 			
@@ -208,6 +213,8 @@ public class ListeNouvelles extends Activity {
 						String image = node.getString(TAG_IMAGE);
 						String dt = node.getString(TAG_DATE);
 						String hr = node.getString(TAG_HEURE);
+						String pays = node.getString(TAG_PAYS);
+						String ville = node.getString(TAG_VILLE);
 						int minute = node.getInt(TAG_INTERVALLE);
 						
 						int uid = node.getInt(TAG_UID);
@@ -216,7 +223,7 @@ public class ListeNouvelles extends Activity {
 						String courriel = node.getString(TAG_COURRIEL);
 								
 						Utilisateur u = new Utilisateur(uid, courriel, nom, prenom);
-						Nouvelle n = new Nouvelle(Long.parseLong(id), comment, image, u, minute);
+						Nouvelle n = new Nouvelle(Long.parseLong(id), comment, image, pays, ville, dt, hr, u, minute);
 						
 						// Nouvelle Hashmap de nouvelles
 						LinkedHashMap<String, Nouvelle> map = new LinkedHashMap<String, Nouvelle>();
@@ -244,7 +251,8 @@ public class ListeNouvelles extends Activity {
 			runOnUiThread(new Runnable() {
 				public void run() {
 					ListeNouvellesAdapteur adapt = new ListeNouvellesAdapteur(ListeNouvelles.this, R.layout.list_post, liste);	
-					vListe.setAdapter(adapt);					
+					vListe.setAdapter(adapt);
+					vListe.refreshDrawableState();
 				}
 			});
 		}

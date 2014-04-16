@@ -15,6 +15,7 @@ import com.android.itravel.R.id;
 import com.android.itravel.R.layout;
 import com.android.itravel.constant.DataURL;
 import com.android.itravel.util.DataAccessController;
+import com.android.itravel.util.ImageLoader;
 //import com.android.itravel.util.ImageLoader;
 
 import android.content.Context;
@@ -52,7 +53,7 @@ public class ListeNouvellesAdapteur extends ArrayAdapter<LinkedHashMap<String, N
 		Nouvelle n = item.get(key);
 		
 		if (n != null) {
-			TextView nomContact = (TextView) v.findViewById(R.id.txtListeNomContact);
+			TextView nomContact = (TextView) v.findViewById(R.id.txtDetailListeCommentaire);
 			TextView commentaire= (TextView) v.findViewById(R.id.txtListeCommentaire);
 			TextView minute     = (TextView) v.findViewById(R.id.txtListePostTime);
 			ImageView image		= (ImageView) v.findViewById(R.id.imvListeImage);
@@ -72,12 +73,10 @@ public class ListeNouvellesAdapteur extends ArrayAdapter<LinkedHashMap<String, N
 			
 			if (image != null) {
 				// si la nouvelle contient une image
-				if (!n.getImageId().isEmpty() && !n.getImageId().equalsIgnoreCase("")) {
-					//ImageLoader imgLoader = new ImageLoader(parent.getContext());
-					
-					Log.d("image url", DataURL.SERVER_URL+n.getImageId());
-					
-					//imgLoader.DisplayImage(DataURL.SERVER_URL+n.getImageId(), image);
+				if (!n.getImageId().isEmpty() && !n.getImageId().equalsIgnoreCase("") && image.getDrawable() == null) {
+					ImageLoader imgLoader = new ImageLoader(parent.getContext());
+										
+					imgLoader.DisplayImage(DataURL.SERVER_URL+n.getImageId(), image);
 				}
 			}
 		

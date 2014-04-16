@@ -35,7 +35,7 @@
         </activity>
         <activity
             android:name="com.android.itravel.ListeNouvelles"
-            android:label="@string/title_activity_liste_nouvelles" >
+            android:label="@string/title_activity_liste_nouvelles" >     
         </activity>
         <activity
             android:name="com.android.itravel.DetailsNouvelle"

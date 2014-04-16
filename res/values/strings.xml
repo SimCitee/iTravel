@@ -8,7 +8,8 @@
     <string name="btnSeeMyPost">My posts</string>
     <string name="title_activity_details_nouvelle">DetailsNouvelle</string>
     <string name="btnDetailAddComment">Send</string>
-    <string name="txtDetailPosition">Position :</string>
+    <string name="txtDetailPays">Pays :</string>
+    <string name="txtDetailVille">Ville :</string>
     <string name="title_activity_my_news">Mes nouvelles</string>
     <string name="noInternetConnection">No internet connection</string>
     <string name="title_activity_mes_nouvelles_modifier">Modifier nouvelle</string>
@@ -46,5 +47,7 @@
     <string name="timeHourAgo">heures</string>
     <string name="timeMinuteAgo">minutes</string>
     <string name="timeDayAgo">jours</string>
+    <string name="txtPostedOn">Émis le</string>
+    <string name="txtDetailCommentLabel">Commentaire du voyageur</string>
 
 </resources>

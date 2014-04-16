@@ -4,9 +4,17 @@ public class Commentaire {
 	
 	private int commentaireId;
 	private String commentaireTexte;
-	private Utilisateur utilisateur;
-	private Nouvelle nouvelle;
+	private String commenteur;
+	private String dateEmission;
 	
+	public Commentaire() {}
+	
+	public Commentaire(int id, String comment, String commenteur, String date) {
+		this.commentaireId = id;
+		this.commentaireTexte = comment;
+		this.commenteur = commenteur;
+		this.dateEmission = date;
+	}
 	
 	public int getCommentaireId() {
 		return commentaireId;
@@ -23,22 +31,21 @@ public class Commentaire {
 	public void setCommentaireTexte(String commentaireTexte) {
 		this.commentaireTexte = commentaireTexte;
 	}
-	
-	public Utilisateur getUtilisateur() {
-		return utilisateur;
+
+	public String getCommenteur() {
+		return commenteur;
 	}
-	
-	public void setUtilisateur(Utilisateur utilisateur) {
-		this.utilisateur = utilisateur;
+
+	public void setCommenteur(String commenteur) {
+		this.commenteur = commenteur;
 	}
-	
-	public Nouvelle getNouvelle() {
-		return nouvelle;
+
+	public String getDateEmission() {
+		return dateEmission;
 	}
-	
-	public void setNouvelle(Nouvelle nouvelle) {
-		this.nouvelle = nouvelle;
+
+	public void setDateEmission(String dateEmission) {
+		this.dateEmission = dateEmission;
 	}
-	
 	
 }
