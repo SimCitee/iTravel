@@ -177,6 +177,7 @@ public class MainActivity extends Activity {
 			if (UtilisateurActif.getInstance().getUtilisateur() != null) {
 				Intent intent = new Intent(MainActivity.this, ListeNouvelles.class);
 	    		startActivity(intent);
+	    		finish();
 			}
 		}
 		

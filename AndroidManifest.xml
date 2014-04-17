@@ -39,6 +39,7 @@
         </activity>
         <activity
             android:name="com.android.itravel.DetailsNouvelle"
+            android:parentActivityName="com.android.itravel.ListeNouvelles"
             android:label="@string/title_activity_details_nouvelle" >
         </activity>
         <activity
@@ -64,10 +65,12 @@
         </activity>
         <activity
             android:name="com.android.itravel.NouveauCompte"
+            android:parentActivityName="com.android.itravel.MainActivity"
             android:label="@string/title_activity_nouveau_compte" >
         </activity>
         <activity
             android:name="com.android.itravel.ListeVoyageurs"
+            android:parentActivityName="com.android.itravel.ListeNouvelles"
             android:label="@string/title_activity_liste_voyageurs" >
             
         </activity>
