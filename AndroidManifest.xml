@@ -35,7 +35,7 @@
         </activity>
         <activity
             android:name="com.android.itravel.ListeNouvelles"
-            android:label="@string/title_activity_liste_nouvelles" >     
+            android:label="@string/title_activity_liste_nouvelles" >
         </activity>
         <activity
             android:name="com.android.itravel.DetailsNouvelle"
@@ -65,6 +65,11 @@
         <activity
             android:name="com.android.itravel.NouveauCompte"
             android:label="@string/title_activity_nouveau_compte" >
+        </activity>
+        <activity
+            android:name="com.android.itravel.ListeVoyageurs"
+            android:label="@string/title_activity_liste_voyageurs" >
+            
         </activity>
     </application>
 

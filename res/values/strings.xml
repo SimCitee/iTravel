@@ -49,5 +49,8 @@
     <string name="timeDayAgo">jours</string>
     <string name="txtPostedOn">Émis le</string>
     <string name="txtDetailCommentLabel">Commentaire du voyageur</string>
+    <string name="title_activity_liste_voyageurs">ListeVoyageurs</string>
+    <string name="chkFollow">Suivre</string>
+    <string name="btnSubscribe">S\'abonner aux comptes</string>
 
 </resources>

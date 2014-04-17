@@ -1,41 +1,40 @@
 package com.android.itravel;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import model.Nouvelle;
+import model.Utilisateur;
+import model.UtilisateurActif;
+
 import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.android.itravel.constant.DataURL;
-import com.android.itravel.database.ITravelDbHelper;
-import com.android.itravel.database.ITravelContract.EntreeNouvelle;
-import com.android.itravel.database.ITravelContract.EntreeUtilisateur;
-import com.android.itravel.listadaptor.ListeNouvellesAdapteur;
-import com.android.itravel.util.ConnectionDetector;
-import com.android.itravel.util.DataAccessController;
-import com.android.itravel.util.JSONParser;
-
-import model.Nouvelle;
-import model.Utilisateur;
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import com.android.itravel.constant.DataURL;
+import com.android.itravel.database.ITravelContract.EntreeNouvelle;
+import com.android.itravel.database.ITravelDbHelper;
+import com.android.itravel.listadaptor.ListeNouvellesAdapteur;
+import com.android.itravel.util.ConnectionDetector;
+import com.android.itravel.util.DataAccessController;
 
 public class ListeNouvelles extends Activity {
 
@@ -138,6 +137,18 @@ public class ListeNouvelles extends Activity {
 		return true;
 	}
 	
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	
+    	//Ajout
+        if (item.getItemId() == R.id.liste_nouvelles_actionbar_addsubscription) {
+        	Intent intent = new Intent(ListeNouvelles.this, ListeVoyageurs.class);
+        	startActivity(intent);
+        }
+
+        return true;
+    }
+	
 	private Button.OnClickListener onMyPost=new Button.OnClickListener() {
 
 		@Override
@@ -178,7 +189,7 @@ public class ListeNouvelles extends Activity {
 	 * Charger toutes les nouvelles d'un utilisateur
 	 */
 
-	public class LoadNouvellesUtilisateur extends AsyncTask<String, String, String> {
+	private class LoadNouvellesUtilisateur extends AsyncTask<String, String, String> {
 
 		@Override
 		protected void onPreExecute() {
@@ -194,6 +205,10 @@ public class ListeNouvelles extends Activity {
 		protected String doInBackground(String... args) {
 						
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			
+			String utilisateur_id = String.valueOf(UtilisateurActif.getInstance().getUtilisateur().getUtilisateurId());
+			
+			params.add(new BasicNameValuePair("utilisateur_id", utilisateur_id));
 			JSONObject json = DataAccessController.getDataFromUrl(DataURL.NOUVELLES_VOYAGEURS, "GET", params);
 
 			try {

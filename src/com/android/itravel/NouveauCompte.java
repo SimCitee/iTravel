@@ -11,28 +11,21 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.android.itravel.ListeNouvelles.LoadNouvellesUtilisateur;
-import com.android.itravel.constant.DataURL;
-import com.android.itravel.util.ConnectionDetector;
-import com.android.itravel.util.DataAccessController;
-import com.android.itravel.util.Encryption;
-
 import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.os.Build;
+
+import com.android.itravel.constant.DataURL;
+import com.android.itravel.util.ConnectionDetector;
+import com.android.itravel.util.DataAccessController;
+import com.android.itravel.util.Encryption;
 
 public class NouveauCompte extends Activity {
 

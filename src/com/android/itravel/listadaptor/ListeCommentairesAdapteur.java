@@ -29,14 +29,14 @@ public class ListeCommentairesAdapteur extends ArrayAdapter<LinkedHashMap<String
 		
 		if (v == null) {
 			LayoutInflater vi = LayoutInflater.from(getContext());
-			v = vi.inflate(R.layout.liste_commentaire, null);
+			v = vi.inflate(R.layout.liste_voyageur, null);
 		}
 		
 		LinkedHashMap<String, Commentaire> item = (LinkedHashMap<String, Commentaire>) data.get(position);
 		Object key = item.keySet().iterator().next();
 		Commentaire c = item.get(key);
 		
-		if (c != null) {
+		/*if (c != null) {
 			TextView dateHeure = (TextView) v.findViewById(R.id.txtDetailListeDateHeure);
 			TextView commentaire= (TextView) v.findViewById(R.id.txtDetailListeCommentaire);
 			
@@ -48,7 +48,7 @@ public class ListeCommentairesAdapteur extends ArrayAdapter<LinkedHashMap<String
 				dateHeure.setText(c.getDateEmission());
 			}
 		
-		}
+		}*/
 		
 		return v;
 	}
