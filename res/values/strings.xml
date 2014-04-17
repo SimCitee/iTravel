@@ -39,7 +39,7 @@
     <string name="txtNewAccountTitle">Nouveau compte</string>
     <string name="btnNewAccountSave">Enregister</string>
     <string name="btnNewAccountCancel">Annuler</string>
-    <string name="alertSavingAccount">Saving account info...</string>
+    <string name="alertSavingAccount">Sauvegarde du compte...</string>
     <string name="alertErrorSavingAccount">Il y a eu problème avec l\'enregistrement, veuillez essayer à nouveau.</string>
     <string name="alertMissingField">Veuillez remplir tout les champs.</string>
     <string name="alertPasswordsDiffer">Les mots de passes ne sont pas identique.</string>

@@ -28,8 +28,8 @@ public final class R {
     public static final class drawable {
         public static final int background=0x7f020000;
         public static final int ic_launcher=0x7f020001;
-        public static final int ic_menu_allfriend=0x7f020002;
-        public static final int ic_menu_camera=0x7f020003;
+        public static final int ic_menu_camera=0x7f020002;
+        public static final int ic_voyageurs=0x7f020003;
         public static final int orange_button=0x7f020004;
         public static final int thumbnail_default=0x7f020005;
         public static final int thumbnail_default_small=0x7f020006;

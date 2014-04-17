@@ -35,5 +35,18 @@
     <string name="txtNewAccountTitle">New account</string>
     <string name="btnNewAccountSave">Save</string>
     <string name="btnNewAccountCancel">Cancel</string>
+    <string name="alertSavingAccount">Saving account info...</string>
+    <string name="alertErrorSavingAccount">There was a problem saving your account. Please try again.</string>
+    <string name="alertMissingField">Please fill in all fields.</string>
+    <string name="alertPasswordsDiffer">Passwords do not match.</string>
+    <string name="alertLoadingNews">Loading news.</string>
+    <string name="timeHourAgo">hours</string>
+    <string name="timeMinuteAgo">minutes</string>
+    <string name="timeDayAgo">days</string>
+    <string name="txtPostedOn">Posted on</string>
+    <string name="txtDetailCommentLabel">Traveler\'s comment</string>
+    <string name="title_activity_liste_voyageurs">Travelers list</string>
+    <string name="chkFollow">Follow</string>
+    <string name="btnSubscribe">Subscribe to accounts</string>
 
 </resources>

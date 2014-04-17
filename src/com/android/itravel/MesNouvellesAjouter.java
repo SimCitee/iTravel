@@ -280,8 +280,11 @@ public class MesNouvellesAjouter extends Activity {
 				{
 					//Cherche les le pays et la ville
 					HashMap<String, String> loc= LocationHelper.getAddress(MesNouvellesAjouter.this, photoLatitude, photoLongitude);
-					ville = loc.get("ville");
-					pays = loc.get("pays");
+					
+					if(loc != null) {
+						ville = loc.get("ville");
+						pays = loc.get("pays");
+					}
 					
 					//Écrit la position dans le textview
 					t_position.setText(ville + ", " + pays);

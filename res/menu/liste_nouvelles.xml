@@ -2,7 +2,7 @@
 
     <item android:id="@+id/liste_nouvelles_actionbar_addsubscription" 
         android:title=""
-        android:icon="@android:drawable/ic_menu_add"
+        android:icon="@drawable/ic_voyageurs"
         android:showAsAction="ifRoom|withText"/>
 
 </menu>

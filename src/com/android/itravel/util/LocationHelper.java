@@ -43,7 +43,7 @@ public class LocationHelper {
 	                return data;
 	            }
 	        }
-	        catch(IOException e){
+	        catch(Exception e){
 	            e.printStackTrace();
 	            return null;
 	        }
